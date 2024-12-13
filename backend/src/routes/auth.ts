@@ -1,6 +1,4 @@
 import { Router } from "express";
-import bcrypt from "bcrypt";
-import pool from "../db";
 import { createUser, loginUser } from "../controllers/authController";
 
 const router = Router();

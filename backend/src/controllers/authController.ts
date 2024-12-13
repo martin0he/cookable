@@ -79,7 +79,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
     const token = jwt.sign(
       { id: user.id, username: user.username },
       process.env.JWT_SECRET as string,
-      { expiresIn: process.env.JWT_EXPIRES_IN || "1h" }
+      { expiresIn: process.env.JWT_EXPIRES_IN || "6h" }
     );
 
     res.status(200).json({
@@ -89,6 +89,10 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
         id: user.id,
         username: user.username,
         email,
+        profile_picture_url: user.profile_picture_url,
+        bio: user.bio,
+        first_name: user.first_name,
+        last_name: user.last_name,
       },
     });
   } catch (error) {

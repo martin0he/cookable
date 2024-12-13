@@ -9,19 +9,43 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: db
     ports:
-      - "5365:5432"
+      - "5365:5432" # Expose PostgreSQL on host port 5365
     volumes:
       - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d db -U user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always # Ensure the service restarts if needed
 
   backend:
     build:
       context: ./backend
     ports:
       - "3001:3001"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
     depends_on:
       - db
     environment:
       DATABASE_URL: postgres://user:password@db:5432/db
+      NODE_ENV: development
+      PORT: 3001
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      VITE_API_URL: http://localhost:3001
+    depends_on:
+      - backend
 
 volumes:
   db-data:
