@@ -1,6 +1,10 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import pool from "../db";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 // Fetch all users
 export const getUsers = async (req: Request, res: Response) => {
@@ -17,6 +21,11 @@ export const getUsers = async (req: Request, res: Response) => {
 export const getSpecificUser = async (req: Request, res: Response) => {
   const { id } = req.params;
 
+  if (!id) {
+    res.status(400).send("Invalid user ID");
+    return;
+  }
+
   try {
     const result = await pool.query("SELECT * FROM Users WHERE id = $1", [id]);
     if (result.rows.length === 0) {
@@ -30,24 +39,39 @@ export const getSpecificUser = async (req: Request, res: Response) => {
   }
 };
 
-// Fetch the current user
-export const getCurrentUser = async (req: Request, res: Response) => {
-  const { user } = req.body;
-
+export const getCurrentUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
+    const userId = req.body.userId; // Set by authenticateToken middleware
+
+    if (!userId) {
+      res
+        .status(401)
+        .json({ error: "Unauthorized: No user ID found in request" });
+      return;
+    }
+
     const result = await pool.query("SELECT * FROM Users WHERE id = $1", [
-      user.id,
+      userId,
     ]);
-    res.json(result.rows[0]);
+
+    if (result.rows.length === 0) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    res.status(200).json(result.rows[0]);
   } catch (error) {
     console.error("Error fetching current user:", error);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
 // Update the current user
 export const updateUser = async (req: Request, res: Response) => {
-  const { userId } = req.body;
+  const userId = req.body.userId; // Trust only userId from the middleware
   const { username, firstName, lastName, profilePic, email, bio } = req.body;
 
   try {

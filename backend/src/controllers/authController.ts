@@ -58,8 +58,10 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
   }
 
   try {
+    // Fetch user with all necessary fields
     const userQuery = await pool.query(
-      "SELECT id, username, password_hash FROM Users WHERE email = $1",
+      `SELECT id, username, first_name, last_name, profile_picture_url, email, bio, password_hash 
+       FROM Users WHERE email = $1`,
       [email]
     );
 
@@ -70,30 +72,24 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
 
     const user = userQuery.rows[0];
 
+    // Compare provided password with hashed password
     const isMatch = await bcrypt.compare(password, user.password_hash);
     if (!isMatch) {
       res.status(401).json({ error: "Invalid email or password" });
       return;
     }
 
+    // Generate JWT
     const token = jwt.sign(
-      { id: user.id, username: user.username },
+      { id: user.id, username: user.username }, // Include essential data only
       process.env.JWT_SECRET as string,
       { expiresIn: process.env.JWT_EXPIRES_IN || "6h" }
     );
 
+    // Respond with the token and user info
     res.status(200).json({
       message: "Login successful",
       token,
-      user: {
-        id: user.id,
-        username: user.username,
-        email,
-        profile_picture_url: user.profile_picture_url,
-        bio: user.bio,
-        first_name: user.first_name,
-        last_name: user.last_name,
-      },
     });
   } catch (error) {
     console.error("Error logging in user:", error);
