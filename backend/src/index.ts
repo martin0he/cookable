@@ -4,6 +4,7 @@ import cookbooksRoutes from "./routes/cookbooks";
 import recipesRoutes from "./routes/recipes";
 import authenticationRoutes from "./routes/auth";
 import cors from "cors";
+import { authenticateToken } from "./middleware/authMiddleware";
 
 const app = express();
 
@@ -13,11 +14,15 @@ app.use(
   })
 );
 app.use(express.json());
+
+app.use("/auth", authenticationRoutes);
+
+app.use(authenticateToken);
+
 // Routes
 app.use("/users", usersRoutes);
 app.use("/cookbooks", cookbooksRoutes);
 app.use("/recipes", recipesRoutes);
-app.use("/auth", authenticationRoutes);
 
 const PORT = 3001;
 app.listen(PORT, () => {
