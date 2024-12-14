@@ -5,15 +5,14 @@ import Navbar from "../components/navigation/Navbar";
 const PageLayout = ({ children }: { children: ReactElement }) => {
   return (
     <Box
-      width="100vw"
-      height="100vh"
       display="flex"
       flexDirection="column"
       alignItems="center"
       paddingX="30px"
+      paddingTop="150px"
     >
       <Navbar />
-      <div>{children}</div>
+      {children}
     </Box>
   );
 };

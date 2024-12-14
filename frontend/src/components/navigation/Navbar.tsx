@@ -1,6 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import NavButton from "./NavButton";
+import AvatarMenu from "./Avatar";
 
 const Navbar = () => {
   const [opacity, setOpacity] = useState(1);
@@ -40,10 +41,11 @@ const Navbar = () => {
       <Typography variant="h5" sx={{ color: "secondary.dark" }}>
         cookable
       </Typography>
-      <Box display="flex" flexDirection="row" gap="20px">
+      <Box display="flex" flexDirection="row" gap="20px" alignItems="center">
         <NavButton label="bookcase" route="/bookcase" />
         <NavButton label="trending" route="/trending" />
         <NavButton label="explore" route="/explore" />
+        <AvatarMenu />
       </Box>
     </Box>
   );
