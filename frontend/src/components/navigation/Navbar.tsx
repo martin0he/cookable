@@ -1,10 +1,26 @@
-import { Box, Typography } from "@mui/material";
+import {
+  Box,
+  Divider,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import NavButton from "./NavButton";
 import AvatarMenu from "./Avatar";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [opacity, setOpacity] = useState(1);
+  const [isOpen, setIsOpen] = useState(false);
+  const theme = useTheme();
+  const isLessThanMd = useMediaQuery(theme.breakpoints.down("md"));
 
   // set background color opacity to 0.75 when user scrolls down
   useEffect(() => {
@@ -38,15 +54,41 @@ const Navbar = () => {
         zIndex: 1000,
       }}
     >
-      <Typography variant="h5" sx={{ color: "secondary.dark" }}>
-        cookable
-      </Typography>
-      <Box display="flex" flexDirection="row" gap="20px" alignItems="center">
-        <NavButton label="bookcase" route="/bookcase" />
-        <NavButton label="trending" route="/trending" />
-        <NavButton label="explore" route="/explore" />
-        <AvatarMenu />
-      </Box>
+      <Link to="/" style={{ textDecoration: "none" }}>
+        <Typography variant="h5" sx={{ color: "secondary.dark" }}>
+          cookable
+        </Typography>
+      </Link>
+      {isLessThanMd ? (
+        <IconButton onClick={() => setIsOpen(true)}>h</IconButton>
+      ) : (
+        <Box display="flex" flexDirection="row" gap="20px" alignItems="center">
+          <NavButton label="bookcase" route="/bookcase" />
+          <NavButton label="trending" route="/trending" />
+          <NavButton label="explore" route="/explore" />
+          <AvatarMenu />
+        </Box>
+      )}
+      {isLessThanMd && (
+        <Drawer anchor="right" open={isOpen} onClose={() => setIsOpen(false)}>
+          <Box
+            onClick={() => setIsOpen(false)}
+            sx={{ width: "fit-content", padding: "20px" }}
+          >
+            <List>
+              {["bookcase", "trending", "explore"].map((text, index) => (
+                <ListItem key={index} disablePadding>
+                  <NavButton label={text} route={`/${text}`} />
+                </ListItem>
+              ))}
+              <Divider />
+              <ListItem disablePadding>
+                <AvatarMenu />
+              </ListItem>
+            </List>
+          </Box>
+        </Drawer>
+      )}
     </Box>
   );
 };

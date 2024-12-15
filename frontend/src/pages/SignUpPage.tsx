@@ -1,29 +1,23 @@
 import { useState } from "react";
-import axios from "axios";
 import { useAuth } from "../AuthContext";
 import PageLayout from "./PageLayout";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { additionalColors } from "../theme";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
-  const { login, isAuthenticated } = useAuth();
+const SignUp = () => {
+  const { isAuthenticated, register } = useAuth();
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+
   const nav = useNavigate();
 
-  const handleLogin = async () => {
-    try {
-      const response = await axios.post("http://localhost:3001/auth/login", {
-        email,
-        password,
-      });
-      console.log("Login response:", response.data);
-      login(email, password);
-      nav("/");
-    } catch (error) {
-      console.error("Login error:", error);
-    }
+  const handleRegister = async () => {
+    register(username, firstName, lastName, email, password);
+    nav("/");
   };
 
   return (
@@ -45,7 +39,7 @@ const Login = () => {
         }}
       >
         <Typography marginY="25px" variant="h2" fontSize={36}>
-          Sign In
+          Sign Up
         </Typography>
         <Box
           display="flex"
@@ -55,6 +49,32 @@ const Login = () => {
           justifyContent="center"
           alignItems="center"
         >
+          <Box display="flex" flexDirection="row" gap="15px" width="100%">
+            <TextField
+              label="first name"
+              variant="outlined"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              fullWidth
+              sx={{ backgroundColor: additionalColors.inputBg }}
+            />
+            <TextField
+              label="last name"
+              variant="outlined"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              fullWidth
+              sx={{ backgroundColor: additionalColors.inputBg }}
+            />
+          </Box>
+          <TextField
+            label="username"
+            variant="outlined"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            fullWidth
+            sx={{ backgroundColor: additionalColors.inputBg }}
+          />
           <TextField
             type="email"
             label="email"
@@ -74,7 +94,7 @@ const Login = () => {
             sx={{ backgroundColor: additionalColors.inputBg }}
           />
           <Button
-            onClick={handleLogin}
+            onClick={handleRegister}
             sx={{
               width: "fit-content",
               backgroundColor: "primary.main",
@@ -96,4 +116,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;

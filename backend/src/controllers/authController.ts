@@ -10,10 +10,10 @@ export const createUser = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { username, first_name, last_name, email, password } = req.body;
+  const { username, firstName, lastName, email, password } = req.body;
 
   // validate input
-  if (!username || !first_name || !last_name || !email || !password) {
+  if (!username || !firstName || !lastName || !email || !password) {
     res.status(400).json({ error: "Missing required fields" });
     return;
   }
@@ -30,7 +30,7 @@ export const createUser = async (
       VALUES ($1, $2, $3, $4, $5) 
       RETURNING id
       `,
-      [username, first_name, last_name, email, passwordHash]
+      [username, firstName, lastName, email, passwordHash]
     );
 
     // respond with the new user's ID

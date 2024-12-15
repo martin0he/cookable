@@ -7,6 +7,13 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
+  register: (
+    username: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string
+  ) => Promise<void>;
   logout: () => void;
 }
 
@@ -57,6 +64,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const register = async (
+    username: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string
+  ) => {
+    try {
+      const response = await axios.post("http://localhost:3001/auth/register", {
+        username,
+        firstName,
+        lastName,
+        email,
+        password,
+      });
+      console.log("Register response:", response.data);
+      await login(email, password);
+    } catch (error) {
+      console.error("Register error:", error);
+      throw new Error("Register failed");
+    }
+  };
+
   // Logout function
   const logout = () => {
     localStorage.removeItem("token");
@@ -74,7 +104,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, isAuthenticated, login, register, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );
