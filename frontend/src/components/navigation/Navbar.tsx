@@ -5,8 +5,6 @@ import {
   IconButton,
   List,
   ListItem,
-  ListItemButton,
-  ListItemText,
   Typography,
   useMediaQuery,
   useTheme,
@@ -73,19 +71,31 @@ const Navbar = () => {
         <Drawer anchor="right" open={isOpen} onClose={() => setIsOpen(false)}>
           <Box
             onClick={() => setIsOpen(false)}
-            sx={{ width: "fit-content", padding: "20px" }}
+            sx={{
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              paddingY: "10px",
+              paddingX: "20px",
+            }}
           >
-            <List>
-              {["bookcase", "trending", "explore"].map((text, index) => (
-                <ListItem key={index} disablePadding>
-                  <NavButton label={text} route={`/${text}`} />
-                </ListItem>
-              ))}
+            <Box>
+              <List>
+                {["bookcase", "trending", "explore"].map((text, index) => (
+                  <ListItem key={index} disablePadding>
+                    <NavButton label={text} route={`/${text}`} />
+                  </ListItem>
+                ))}
+              </List>
               <Divider />
+            </Box>
+
+            <Box>
               <ListItem disablePadding>
                 <AvatarMenu />
               </ListItem>
-            </List>
+            </Box>
           </Box>
         </Drawer>
       )}

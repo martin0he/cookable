@@ -88,7 +88,7 @@ export const updateUser = async (req: Request, res: Response) => {
 
 // Delete the current user
 export const deleteUser = async (req: Request, res: Response) => {
-  const { userId } = req.body;
+  const userId = req.body.userId;
 
   try {
     await pool.query("DELETE FROM Users WHERE id = $1", [userId]);

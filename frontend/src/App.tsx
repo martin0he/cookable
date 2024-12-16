@@ -15,9 +15,9 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<LandingPage />} />
-            <Route path="/bookcase" element={<LandingPage />} />
-            <Route path="/trending" element={<LandingPage />} />
-            <Route path="/explore" element={<LandingPage />} />
+            <Route path="/bookcase" element={<Login />} />
+            <Route path="/trending" element={<Login />} />
+            <Route path="/explore" element={<Login />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
           </Routes>
