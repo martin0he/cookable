@@ -20,7 +20,7 @@ const Login = () => {
       });
       console.log("Login response:", response.data);
       login(email, password);
-      nav("/");
+      nav("/about");
     } catch (error) {
       console.error("Login error:", error);
     }

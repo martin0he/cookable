@@ -8,6 +8,9 @@ import Login from "./pages/LoginPage";
 import SignUp from "./pages/SignUpPage";
 import NotFound from "./pages/NotFound";
 import AboutPage from "./pages/AboutPage";
+import BookcasePage from "./pages/BookcasePage";
+import TrendingPage from "./pages/TrendingPage";
+import ExplorePage from "./pages/ExplorePage";
 
 interface ProtectedRouteProps {
   children: React.ReactElement;
@@ -39,7 +42,7 @@ function App() {
               path="/bookcase"
               element={
                 <ProtectedRoute>
-                  <Login />
+                  <BookcasePage />
                 </ProtectedRoute>
               }
             />
@@ -47,7 +50,7 @@ function App() {
               path="/trending"
               element={
                 <ProtectedRoute>
-                  <LandingPage />
+                  <TrendingPage />
                 </ProtectedRoute>
               }
             />
@@ -55,7 +58,7 @@ function App() {
               path="/explore"
               element={
                 <ProtectedRoute>
-                  <LandingPage />
+                  <ExplorePage />
                 </ProtectedRoute>
               }
             />

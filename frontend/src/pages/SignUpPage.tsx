@@ -17,7 +17,7 @@ const SignUp = () => {
 
   const handleRegister = async () => {
     register(username, firstName, lastName, email, password);
-    nav("/");
+    nav("/about");
   };
 
   return (
