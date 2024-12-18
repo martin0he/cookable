@@ -61,6 +61,7 @@ const Navbar = () => {
         <IconButton onClick={() => setIsOpen(true)}>h</IconButton>
       ) : (
         <Box display="flex" flexDirection="row" gap="20px" alignItems="center">
+          <NavButton label="about" route="/about" />
           <NavButton label="bookcase" route="/bookcase" />
           <NavButton label="trending" route="/trending" />
           <NavButton label="explore" route="/explore" />
@@ -82,11 +83,13 @@ const Navbar = () => {
           >
             <Box>
               <List>
-                {["bookcase", "trending", "explore"].map((text, index) => (
-                  <ListItem key={index} disablePadding>
-                    <NavButton label={text} route={`/${text}`} />
-                  </ListItem>
-                ))}
+                {["about", "bookcase", "trending", "explore"].map(
+                  (text, index) => (
+                    <ListItem key={index} disablePadding>
+                      <NavButton label={text} route={`/${text}`} />
+                    </ListItem>
+                  )
+                )}
               </List>
               <Divider />
             </Box>

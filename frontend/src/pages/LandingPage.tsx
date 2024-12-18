@@ -1,16 +1,30 @@
 import { Box, Typography } from "@mui/material";
 import { useAuth } from "../AuthContext";
-import NavButton from "../components/navigation/NavButton";
+import { useNavigate } from "react-router-dom";
+import CustomButton from "../components/general/CustomButton";
 
 const SectionOne = () => {
   return (
     <Box
-      height="90vh"
+      height="100vh"
       display="flex"
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
     >
+      <img
+        src="landing.jpg"
+        alt="landing"
+        width="100%"
+        height="100%"
+        style={{
+          opacity: 0.2,
+          position: "absolute",
+          zIndex: -1,
+          backdropFilter: "blur(20px)",
+          top: 0,
+        }}
+      />
       <Typography
         fontSize={{ xs: 50, sm: 70, md: 90, lg: 110 }}
         color="secondary.dark"
@@ -24,7 +38,7 @@ const SectionOne = () => {
 const SectionTwo = () => {
   return (
     <Box
-      height="90vh"
+      height="100vh"
       display="flex"
       flexDirection="row"
       justifyContent="center"
@@ -128,6 +142,58 @@ const SectionTwo = () => {
   );
 };
 
+const SectionThree = () => {
+  return (
+    <Box
+      height="100vh"
+      display="flex"
+      flexDirection={{ lg: "row", md: "row", sm: "column", xs: "column" }}
+      justifyContent="center"
+      alignItems="center"
+      gap={{ lg: "100px", md: "75px", sm: "50px", xs: "25px" }}
+    >
+      <Box width={{ lg: "35%", md: "35%", sm: "80%", xs: "80%" }}>
+        <img src="sketchbook.png" alt="sketchbook" width="100%" />
+      </Box>
+
+      <Box
+        width={{ lg: "35%", md: "35%", sm: "80%", xs: "80%" }}
+        display="flex"
+        flexDirection="column"
+        gap="20px"
+      >
+        <Typography fontSize={{ lg: 25, md: 21, sm: 18, xs: 15 }}>
+          Catalog and save your favorite recipes. Keep them close wherever you
+          are and spread your creativity. Have fun with it...
+        </Typography>
+        <Typography fontSize={{ lg: 23, md: 20, sm: 17, xs: 14 }}>
+          “The way you make an omelet reveals your character.”
+        </Typography>
+        <Typography fontSize={{ lg: 21, md: 28, sm: 15, xs: 12 }}>
+          - Anthony Bourdain (1956-2018)
+        </Typography>
+      </Box>
+    </Box>
+  );
+};
+
+const ContinueButton = () => {
+  const nav = useNavigate();
+  return (
+    <Box
+      position="fixed"
+      bottom="30px"
+      right={{ lg: "30px", md: "30px", sm: "20px", xs: "20px" }}
+    >
+      <CustomButton
+        text="continue"
+        fontSize={20}
+        onClick={() => nav("/about")}
+      />
+    </Box>
+  );
+};
+
 const LandingPage = () => {
   const { user } = useAuth();
   console.log(user);
@@ -139,7 +205,8 @@ const LandingPage = () => {
       {/* Section 2 */}
       <SectionTwo />
       {/* Section 3 */}
-      <NavButton label={"continue"} route={"/bookcase"} />
+      <SectionThree />
+      <ContinueButton />
     </Box>
   );
 };
