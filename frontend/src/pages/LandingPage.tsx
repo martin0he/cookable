@@ -23,6 +23,7 @@ const SectionOne = () => {
           zIndex: -1,
           backdropFilter: "blur(20px)",
           top: 0,
+          objectFit: "cover",
         }}
       />
       <Typography
@@ -40,10 +41,10 @@ const SectionTwo = () => {
     <Box
       height="100vh"
       display="flex"
-      flexDirection="row"
+      flexDirection={{ lg: "row", md: "row", sm: "column", xs: "column" }}
       justifyContent="center"
       alignItems="center"
-      gap={{ lg: "100px", md: "75px", sm: "50px", xs: "25px" }}
+      gap={{ lg: "100px", md: "75px", sm: "100px", xs: "125px" }}
     >
       {/* box 1 */}
       <Box>
