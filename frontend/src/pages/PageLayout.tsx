@@ -8,8 +8,9 @@ const PageLayout = ({ children }: { children: ReactElement }) => {
       display="flex"
       flexDirection="column"
       alignItems="center"
-      paddingX="30px"
+      paddingX="50px"
       paddingTop="150px"
+      height="100vh"
     >
       <Navbar />
       {children}

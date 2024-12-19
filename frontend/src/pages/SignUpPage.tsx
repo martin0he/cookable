@@ -34,7 +34,7 @@ const SignUp = () => {
           borderRadius: 2,
           border: 1,
           borderStyle: "dashed",
-          borderWidth: 1.8,
+          borderWidth: 2.2,
           borderColor: "primary.main",
         }}
       >
