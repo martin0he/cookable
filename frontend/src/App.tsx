@@ -8,9 +8,10 @@ import Login from "./pages/LoginPage";
 import SignUp from "./pages/SignUpPage";
 import NotFound from "./pages/NotFound";
 import AboutPage from "./pages/AboutPage";
-import BookcasePage from "./pages/BookcasePage";
+import BookcasePage from "./pages/bookcase/BookcasePage";
 import TrendingPage from "./pages/TrendingPage";
 import ExplorePage from "./pages/ExplorePage";
+import CreateCookbookPage from "./pages/bookcase/CreateCookbookPage";
 
 interface ProtectedRouteProps {
   children: React.ReactElement;
@@ -38,6 +39,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             {/* Protected Routes */}
+            {/* Bookcase routes */}
             <Route
               path="/bookcase"
               element={
@@ -46,6 +48,15 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/bookcase/create-cookbook"
+              element={
+                <ProtectedRoute>
+                  <CreateCookbookPage />
+                </ProtectedRoute>
+              }
+            />
+            {/*  */}
             <Route
               path="/trending"
               element={

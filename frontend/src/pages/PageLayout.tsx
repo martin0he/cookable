@@ -8,12 +8,22 @@ const PageLayout = ({ children }: { children: ReactElement }) => {
       display="flex"
       flexDirection="column"
       alignItems="center"
+      justifyContent="center"
       paddingX="50px"
       paddingTop="150px"
-      height="100vh"
+      height="calc(100vh - 50px)"
     >
       <Navbar />
-      {children}
+      <Box
+        flex="1"
+        width="100%"
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+      >
+        {children}
+      </Box>
     </Box>
   );
 };

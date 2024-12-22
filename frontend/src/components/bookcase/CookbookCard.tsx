@@ -11,11 +11,7 @@ const CookbookCard = ({ cookbook, onClick }: CookbookCardProps) => {
   const mainColor = "#E4C7C5";
   const shade1 = "#D4B0AE";
   const shade2 = "#C4A099";
-  const {
-    data: recipes,
-    isLoading,
-    error,
-  } = useGetAllRecipesInCookbook(cookbook.id);
+  const { data: recipes } = useGetAllRecipesInCookbook(cookbook.id);
 
   return (
     <Box
@@ -57,7 +53,7 @@ const CookbookCard = ({ cookbook, onClick }: CookbookCardProps) => {
         <Typography>
           {recipes && recipes?.length > 1
             ? `${recipes?.length} recipes`
-            : recipes && recipes?.length < 0
+            : recipes && recipes?.length === 0
             ? "No recipes"
             : `${recipes?.length} recipe`}
         </Typography>
