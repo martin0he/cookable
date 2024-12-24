@@ -156,3 +156,21 @@ export const removeCookbookFromFavorites = async (
     res.status(500).send("Internal Server Error");
   }
 };
+
+export const uploadImage = async (req: Request, res: Response) => {
+  try {
+    if (!req.file) {
+      res.status(400).json({ success: false, message: "No file uploaded" });
+    }
+
+    const file = req.file as Express.Multer.File;
+
+    res.status(200).json({
+      success: true,
+      url: file.path,
+    });
+  } catch (err) {
+    console.error("Error uploading file:", err);
+    res.status(500).json({ success: false, message: "Upload failed" });
+  }
+};

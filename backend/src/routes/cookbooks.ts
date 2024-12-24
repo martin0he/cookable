@@ -9,7 +9,9 @@ import {
   getSpecificCookbook,
   removeCookbookFromFavorites,
   updateCookbook,
+  uploadImage,
 } from "../controllers/cookbooksController";
+import upload from "../upload";
 
 const router = Router();
 
@@ -21,6 +23,7 @@ router.get("/favorited", getFavoritedCookbooks);
 
 // POST routes
 router.post("/", createCookbook);
+router.post("/uploadImage", upload.single("image"), uploadImage);
 router.post("/favorites/:id", addCookbookToFavorites);
 
 // PUT routes
