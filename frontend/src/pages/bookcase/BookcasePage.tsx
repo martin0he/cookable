@@ -25,45 +25,55 @@ const BookcasePage = () => {
 
   return (
     <PageLayout>
+      {/* Main content */}
       <Box
         width="100%"
-        height="100%"
+        minHeight="inherit"
         display="flex"
         justifyContent="center"
         alignItems="flex-start"
         flexDirection={{ xs: "column", md: "row" }}
         padding="45px"
-        paddingTop={12}
         sx={{
           borderRadius: "7px",
           border: 1,
           borderStyle: "dashed",
           borderWidth: 2.2,
           borderColor: "primary.main",
+          overflow: "visible",
+          flexGrow: 1,
         }}
       >
-        {/* Grid */}
-        <Box width={{ xs: "100%", md: "64%" }} height="100%">
-          <Grid width="fit-content" container rowSpacing={3} columns={3}>
+        {/* Grid Section */}
+        <Box
+          width={{ xs: "100%", md: "64%" }}
+          sx={{
+            height: "100%",
+          }}
+        >
+          <Grid container spacing={3} columns={3}>
             {cookbooks.map((cookbook) => (
-              <Grid size={1} key={cookbook.id}>
+              <Grid key={cookbook.id} size={1}>
                 <CookbookCard cookbook={cookbook} onClick={() => {}} />
               </Grid>
             ))}
           </Grid>
         </Box>
 
-        {/* Create new cookbook */}
+        {/* Create New Cookbook Section */}
         <Box
           width={{ xs: "100%", md: "36%" }}
-          height="100%"
+          minHeight="inherit"
           display="flex"
           flexDirection="column"
           justifyContent="center"
           alignItems="center"
+          sx={{
+            marginTop: { xs: "20px", md: "0" },
+          }}
         >
           <Box
-            height="100%"
+            minHeight="inherit"
             width="100%"
             display="flex"
             justifyContent="center"
@@ -91,7 +101,7 @@ const BookcasePage = () => {
                 display: "flex",
                 flexDirection: "column",
                 width: "100%",
-                height: "100%",
+                minHeight: "inherit",
                 borderRadius: "0px",
               }}
             >

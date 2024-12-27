@@ -84,7 +84,12 @@ const CreateCookbookPage = () => {
 
   return (
     <PageLayout>
-      <>
+      <Box
+        width="100%"
+        minHeight="inherit"
+        display="flex"
+        justifyContent="center"
+      >
         {seePreview && preview && (
           <CoverImage
             url={preview}
@@ -312,7 +317,7 @@ const CreateCookbookPage = () => {
             </form>
           </Box>
         </Box>
-      </>
+      </Box>
     </PageLayout>
   );
 };

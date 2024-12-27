@@ -19,7 +19,13 @@ const CookbookCard = ({ cookbook, onClick }: CookbookCardProps) => {
       width="185px"
       height="220px"
       onClick={() => onClick(cookbook.id)}
-      sx={{ cursor: "pointer" }}
+      sx={{
+        cursor: "pointer",
+        transition: "all 0.3s ease-in-out",
+        "&:hover": {
+          transform: "translateY(-5px)",
+        },
+      }}
     >
       <Box
         position="absolute"

@@ -8,18 +8,19 @@ const PageLayout = ({ children }: { children: ReactElement }) => {
       display="flex"
       flexDirection="column"
       alignItems="center"
-      justifyContent="center"
-      paddingX="50px"
-      paddingTop="150px"
-      height="calc(100vh - 50px)"
+      width="100%"
+      minHeight="100vh"
+      paddingBottom="30px"
     >
       <Navbar />
       <Box
         flex="1"
-        width="100%"
+        width="90%"
+        minHeight="80vh"
+        marginTop="90px"
         display="flex"
         flexDirection="column"
-        justifyContent="center"
+        justifyContent="flex-start"
         alignItems="center"
       >
         {children}
