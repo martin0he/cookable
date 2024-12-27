@@ -12,6 +12,7 @@ import BookcasePage from "./pages/bookcase/BookcasePage";
 import TrendingPage from "./pages/TrendingPage";
 import ExplorePage from "./pages/ExplorePage";
 import CreateCookbookPage from "./pages/bookcase/CreateCookbookPage";
+import CookbookDetailPage from "./pages/bookcase/CookbookDetailPage";
 
 interface ProtectedRouteProps {
   children: React.ReactElement;
@@ -38,13 +39,21 @@ function App() {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
-            {/* Protected Routes */}
-            {/* Bookcase routes */}
+
+            {/* Bookcase Routes */}
             <Route
               path="/bookcase"
               element={
                 <ProtectedRoute>
                   <BookcasePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/bookcase/cookbook/:id"
+              element={
+                <ProtectedRoute>
+                  <CookbookDetailPage />
                 </ProtectedRoute>
               }
             />
@@ -56,7 +65,8 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            {/*  */}
+
+            {/* Trending Routes */}
             <Route
               path="/trending"
               element={
@@ -65,6 +75,8 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
+            {/* Explore Routes */}
             <Route
               path="/explore"
               element={

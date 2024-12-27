@@ -54,7 +54,10 @@ const BookcasePage = () => {
           <Grid container spacing={3} columns={3}>
             {cookbooks.map((cookbook) => (
               <Grid key={cookbook.id} size={1}>
-                <CookbookCard cookbook={cookbook} onClick={() => {}} />
+                <CookbookCard
+                  cookbook={cookbook}
+                  onClick={() => nav(`cookbook/${cookbook.id}`)}
+                />
               </Grid>
             ))}
           </Grid>
