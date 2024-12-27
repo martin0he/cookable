@@ -28,7 +28,7 @@ const CreateCookbookPage = () => {
     authorId: user?.id || 1,
     description: "",
     isPrivate: true,
-    imageUrl: "",
+    coverImageUrl: "",
   });
 
   const { mutate, isLoading, isError, error } = useCreateCookbook();
@@ -70,6 +70,7 @@ const CreateCookbookPage = () => {
       setUploading(false);
       setUploadedUrl(response.data.url);
       console.log("Uploaded Image URL:", response.data.url);
+      formValues.coverImageUrl = uploadedUrl ?? response.data.url;
     } catch (error) {
       console.error("Error uploading image:", error);
     }
@@ -77,10 +78,8 @@ const CreateCookbookPage = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!uploadedUrl) {
-      return alert("Please upload an image before submitting.");
-    }
     mutate(formValues);
+    nav("/bookcase");
   };
 
   return (

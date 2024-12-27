@@ -6,6 +6,7 @@ const createCookbook = async (cookbookData: {
   authorId: number;
   description: string;
   isPrivate: boolean;
+  coverImageUrl: string;
 }) => {
   const response = await api.post("/cookbooks", cookbookData);
   return response.data;

@@ -76,12 +76,12 @@ export const getFavoritedCookbooks = async (req: Request, res: Response) => {
 
 // Create a cookbook
 export const createCookbook = async (req: Request, res: Response) => {
-  const { title, authorId, description, isPrivate } = req.body;
+  const { title, authorId, description, isPrivate, coverImageUrl } = req.body;
 
   try {
     const result = await pool.query(
-      "INSERT INTO Cookbooks (title, author_id, description, is_private) VALUES ($1, $2, $3, $4) RETURNING *",
-      [title, authorId, description, isPrivate]
+      "INSERT INTO Cookbooks (title, author_id, description, is_private, cover_image_url) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      [title, authorId, description, isPrivate, coverImageUrl]
     );
     res.json(result.rows[0]);
   } catch (error) {

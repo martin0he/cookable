@@ -47,7 +47,7 @@ const CookbookCard = ({ cookbook, onClick }: CookbookCardProps) => {
         width="185px"
         height="220px"
         padding="10px"
-        sx={{ backgroundColor: mainColor }}
+        sx={{ backgroundColor: mainColor, overflow: "hidden" }}
       >
         <Typography>{cookbook.title}</Typography>
         <Typography>

@@ -24,7 +24,7 @@ const Navbar = () => {
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 70) {
-        setOpacity(0.75);
+        setOpacity(0.65);
       } else {
         setOpacity(1);
       }
