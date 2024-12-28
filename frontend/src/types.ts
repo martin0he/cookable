@@ -29,9 +29,9 @@ export interface Recipe {
   title: string;
   description: string | null;
   imageUrl: string | null;
-  ingredients: string | null;
-  instructions: string | null;
-  tags: string | null;
+  ingredients: string[] | null;
+  instructions: { summary: string; details: string }[] | null;
+  tags: string[] | null;
   expectedDuration: number | null;
   datePublished: Date;
   dateUpdated: Date;

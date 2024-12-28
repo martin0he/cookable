@@ -40,11 +40,11 @@ CREATE TABLE
         cookbook_id INT REFERENCES Cookbooks (id) ON DELETE CASCADE,
         title VARCHAR(255) NOT NULL,
         description TEXT,
-        instructions TEXT,
-        tags TEXT, -- Can be stored as a comma-separated string or JSON array
+        instructions JSON,
+        tags JSON,
         image_url TEXT,
         expected_duration INT, -- Time in minutes
-        ingredients TEXT, -- Can be stored as a JSON array
+        ingredients JSON,
         date_published TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         date_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         views_count INT DEFAULT 0

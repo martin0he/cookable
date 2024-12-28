@@ -58,22 +58,28 @@ export const createRecipe = async (req: Request, res: Response) => {
     tags,
     expectedDuration,
     ingredients,
+    imageUrl,
   } = req.body;
 
   try {
     const result = await pool.query(
-      "INSERT INTO Recipes (author_id, cookbook_id, title, description, instructions, tags, expected_duration, ingredients) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
+      `INSERT INTO Recipes 
+      (author_id, cookbook_id, title, description, instructions, tags, expected_duration, ingredients, image_url) 
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) 
+      RETURNING *`,
       [
         authorId,
         cookbookId,
         title,
-        description,
-        instructions,
-        tags,
-        expectedDuration,
-        ingredients,
+        description || null,
+        JSON.stringify(instructions) || null,
+        JSON.stringify(tags) || "[]",
+        expectedDuration || null,
+        JSON.stringify(ingredients) || "[]",
+        imageUrl || null,
       ]
     );
+
     res.json(result.rows[0]);
   } catch (error) {
     console.error("Error creating recipe:", error);
@@ -120,10 +126,10 @@ export const updateRecipe = async (req: Request, res: Response) => {
       [
         title,
         description,
-        instructions,
-        tags,
+        JSON.stringify(instructions),
+        JSON.stringify(tags),
         expectedDuration,
-        ingredients,
+        JSON.stringify(ingredients),
         id,
       ]
     );

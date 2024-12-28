@@ -9,7 +9,7 @@ interface RecipeBannerProps {
 }
 
 const RecipeBanner = ({ recipe }: RecipeBannerProps) => {
-  const ingredients = recipe?.ingredients?.split(",");
+  const ingredients = recipe?.ingredients;
   const firstThreeIngredients = ingredients?.slice(0, 3);
   const nav = useNavigate();
 
@@ -49,23 +49,40 @@ const RecipeBanner = ({ recipe }: RecipeBannerProps) => {
         alignContent="center"
         gap="10px"
       >
-        <Typography variant="h5">{recipe.title}</Typography>
+        <Typography fontSize={{ lg: 31, md: 28, sm: 25, xs: 22 }}>
+          {recipe.title}
+        </Typography>
         <Box width="fit-content">
-          {firstThreeIngredients?.map((ingredient) => (
+          {firstThreeIngredients?.map((ingredient, index) => (
             <Chip
+              key={index}
               sx={{ borderRadius: "10px", marginRight: "5px" }}
-              label={ingredient.toLowerCase()}
+              label={
+                <Typography fontSize={{ lg: 16, md: 15, sm: 14, xs: 13 }}>
+                  {ingredient.toLowerCase()}
+                </Typography>
+              }
             />
           ))}
           {ingredients && ingredients.length > 3 && (
             <Tooltip title={ingredients.join(", ")} arrow>
-              <Chip sx={{ borderRadius: "10px", marginX: "3px" }} label="..." />
+              <Chip
+                sx={{ borderRadius: "10px", marginX: "3px" }}
+                label={
+                  <Typography fontSize={{ lg: 16, md: 15, sm: 14, xs: 13 }}>
+                    ...
+                  </Typography>
+                }
+              />
             </Tooltip>
           )}
         </Box>
       </Box>
       {/* Description */}
-      <Typography maxWidth={{ lg: "70%", md: "70%", sm: "80%", xs: "85%" }}>
+      <Typography
+        fontSize={{ lg: 16, md: 15, sm: 14, xs: 13 }}
+        maxWidth={{ lg: "70%", md: "70%", sm: "80%", xs: "85%" }}
+      >
         {recipe.description}
       </Typography>
       {/* Duration */}
@@ -78,6 +95,7 @@ const RecipeBanner = ({ recipe }: RecipeBannerProps) => {
         position="absolute"
         bottom="10px"
         right="10px"
+        alignItems="flex-start"
       >
         <MdAccessTime />
         <Typography>{recipe.expectedDuration}</Typography>

@@ -86,11 +86,13 @@ const CookbookDetailPage = () => {
 
             {/* Date */}
             <Typography
-              sx={{
-                transform: "rotate(-90deg)",
-                whiteSpace: "nowrap",
-                flexShrink: 0,
-              }}
+              sx={
+                {
+                  // transform: "rotate(-90deg)",
+                  // whiteSpace: "nowrap",
+                  // flexShrink: 0,
+                }
+              }
               fontSize={{ lg: 20, md: 18, sm: 16, xs: 14 }}
             >
               {cookbook?.datePublished.toDateString()}
