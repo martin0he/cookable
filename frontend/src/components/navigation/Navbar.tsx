@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Divider,
   Drawer,
@@ -13,12 +14,14 @@ import { useEffect, useState } from "react";
 import NavButton from "./NavButton";
 import AvatarMenu from "./Avatar";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../AuthContext";
 
 const Navbar = () => {
   const [opacity, setOpacity] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
   const theme = useTheme();
   const isLessThanMd = useMediaQuery(theme.breakpoints.down("md"));
+  const { user } = useAuth();
 
   // set background color opacity to 0.75 when user scrolls down
   useEffect(() => {
@@ -58,7 +61,25 @@ const Navbar = () => {
         </Typography>
       </Link>
       {isLessThanMd ? (
-        <IconButton onClick={() => setIsOpen(true)}>h</IconButton>
+        <IconButton onClick={() => setIsOpen(true)}>
+          {" "}
+          <Avatar
+            sx={{
+              width: 43,
+              height: 43,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <img
+              src={
+                user?.profilePictureUrl ??
+                "https://picsum.photos/id/237/200/300"
+              }
+              style={{ width: "100%", height: "100%", borderRadius: "50%" }}
+            />
+          </Avatar>
+        </IconButton>
       ) : (
         <Box display="flex" flexDirection="row" gap="20px" alignItems="center">
           <NavButton label="about" route="/about" />
