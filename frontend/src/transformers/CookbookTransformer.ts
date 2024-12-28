@@ -9,8 +9,8 @@ export const transformCookbook = (backendData: any): Cookbook => {
     description: backendData.description,
     coverImageUrl: backendData.cover_image_url,
     isPrivate: backendData.is_private,
-    datePublished: backendData.date_published,
-    dateUpdated: backendData.date_updated,
+    datePublished: new Date(backendData.date_published),
+    dateUpdated: new Date(backendData.date_updated),
     viewsCount: backendData.views_count,
   };
 };

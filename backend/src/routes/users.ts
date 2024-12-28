@@ -31,7 +31,6 @@ router.post("/reset-password", resetPassword);
 router.post("/follow/:id", authenticateToken, friendUser);
 router.delete("/unfollow/:id", authenticateToken, unfriendUser);
 
-// Dynamic user lookup
-router.get("/:id", getSpecificUser); // Catch-all for specific user by ID
+router.get("/:id", getSpecificUser);
 
 export default router;

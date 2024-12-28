@@ -23,7 +23,7 @@ const Navbar = () => {
   // set background color opacity to 0.75 when user scrolls down
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 70) {
+      if (window.scrollY > 20) {
         setOpacity(0.65);
       } else {
         setOpacity(1);
