@@ -13,6 +13,7 @@ import TrendingPage from "./pages/TrendingPage";
 import ExplorePage from "./pages/ExplorePage";
 import CreateCookbookPage from "./pages/bookcase/CreateCookbookPage";
 import CookbookDetailPage from "./pages/bookcase/CookbookDetailPage";
+import RecipeDetailPage from "./pages/bookcase/RecipeDetailPage";
 
 interface ProtectedRouteProps {
   children: React.ReactElement;
@@ -54,6 +55,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <CookbookDetailPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/bookcase/recipe/:id"
+              element={
+                <ProtectedRoute>
+                  <RecipeDetailPage />
                 </ProtectedRoute>
               }
             />

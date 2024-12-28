@@ -2,6 +2,7 @@ import { Box, Chip, IconButton, Tooltip, Typography } from "@mui/material";
 import { Recipe } from "../../types";
 import { MdAccessTime } from "react-icons/md";
 import { IoAddCircle } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 interface RecipeBannerProps {
   recipe?: Recipe;
@@ -10,10 +11,11 @@ interface RecipeBannerProps {
 const RecipeBanner = ({ recipe }: RecipeBannerProps) => {
   const ingredients = recipe?.ingredients?.split(",");
   const firstThreeIngredients = ingredients?.slice(0, 3);
+  const nav = useNavigate();
 
   return recipe ? (
     <Box
-      onClick={() => {}}
+      onClick={() => nav(`/bookcase/recipe/${recipe.id}`)}
       width="100%"
       marginY="10px"
       display="flex"

@@ -48,16 +48,18 @@ const CookbookDetailPage = () => {
             </Typography>
           </Box>
           {/* cover image */}
-          <img
-            src={cookbook?.coverImageUrl || ""}
-            alt="cover"
-            style={{
-              width: "100%",
-              contain: "cover",
-              borderRadius: "7px",
-              height: "auto",
-            }}
-          />
+          {cookbook && cookbook.coverImageUrl && (
+            <img
+              src={cookbook?.coverImageUrl || ""}
+              alt="cover"
+              style={{
+                width: "100%",
+                contain: "cover",
+                borderRadius: "7px",
+                height: "auto",
+              }}
+            />
+          )}
           {/* Description and Date */}
           <Box
             width="100%"
@@ -74,6 +76,9 @@ const CookbookDetailPage = () => {
                 flex: "1",
                 wordWrap: "break-word",
                 maxWidth: "75%",
+                "&::first-letter": {
+                  fontSize: { lg: 26, md: 24, sm: 22, xs: 20 },
+                },
               }}
             >
               {cookbook?.description}
