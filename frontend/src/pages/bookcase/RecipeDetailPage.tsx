@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PageLayout from "../PageLayout";
 import {
   Accordion,
@@ -6,15 +6,40 @@ import {
   AccordionSummary,
   Box,
   Chip,
+  IconButton,
   Tooltip,
   Typography,
 } from "@mui/material";
-import { MdExpandMore } from "react-icons/md";
+import { MdArrowBack, MdExpandMore } from "react-icons/md";
 import { useGetRecipe } from "../../hooks/useGetRecipe";
+import { useGetAllRecipesInCookbook } from "../../hooks/useGetAllRecipesInCookbook";
 
 const RecipeDetailPage = () => {
   const { id } = useParams();
   const { data: recipe } = useGetRecipe(parseInt(id ?? ""));
+  const { data: allRecipes } = useGetAllRecipesInCookbook(
+    recipe?.cookbookId ?? 1
+  );
+
+  const nav = useNavigate();
+
+  const currentIndex = allRecipes?.findIndex(
+    (r) => r.id === parseInt(id ?? "")
+  );
+
+  // Get the previous and next recipes
+  const previousRecipe =
+    currentIndex !== undefined && allRecipes && currentIndex > 0
+      ? allRecipes[currentIndex - 1]
+      : null;
+
+  const nextRecipe =
+    currentIndex !== undefined &&
+    allRecipes &&
+    currentIndex < (allRecipes?.length ?? 0) - 1
+      ? allRecipes[currentIndex + 1]
+      : null;
+
   const firstThreeTags = recipe?.tags?.slice(0, 3);
   return (
     <PageLayout>
@@ -26,6 +51,27 @@ const RecipeDetailPage = () => {
         justifyContent="center"
         rowGap="8px"
       >
+        {/* back to cookbook */}
+        <Box
+          width="100%"
+          display="flex"
+          flexDirection="row"
+          justifyContent="flex-start"
+          alignItems="center"
+        >
+          <IconButton
+            sx={{
+              padding: "4px 7px",
+              borderRadius: "7px",
+              border: 1.7,
+              borderColor: "secondary.dark",
+              borderStyle: "dashed",
+            }}
+            onClick={() => nav(`/bookcase/cookbook/${recipe?.cookbookId}`)}
+          >
+            <MdArrowBack />
+          </IconButton>
+        </Box>
         {/* title and tags */}
         <Box
           width="100%"
@@ -179,6 +225,45 @@ const RecipeDetailPage = () => {
               </AccordionDetails>
             </Accordion>
           ))}
+        </Box>
+        {/* pagination to next/prev recipes */}
+        <Box
+          width="100%"
+          display="flex"
+          flexDirection="row"
+          justifyContent="space-between"
+          alignItems="center"
+          marginTop="10px"
+        >
+          {/* Previous Recipe */}
+          <Box flex="1" textAlign="left">
+            {previousRecipe ? (
+              <Typography
+                onClick={() => nav(`/bookcase/recipe/${previousRecipe.id}`)}
+                fontSize={{ lg: 20, md: 18, sm: 16, xs: 14 }}
+                sx={{ textDecoration: "underline", cursor: "pointer" }}
+              >
+                Previous Recipe: {previousRecipe.title}
+              </Typography>
+            ) : (
+              <Box />
+            )}
+          </Box>
+
+          {/* Next Recipe */}
+          <Box flex="1" textAlign="right">
+            {nextRecipe ? (
+              <Typography
+                onClick={() => nav(`/bookcase/recipe/${nextRecipe.id}`)}
+                fontSize={{ lg: 20, md: 18, sm: 16, xs: 14 }}
+                sx={{ textDecoration: "underline", cursor: "pointer" }}
+              >
+                Next Recipe: {nextRecipe.title}
+              </Typography>
+            ) : (
+              <Box />
+            )}
+          </Box>
         </Box>
       </Box>
     </PageLayout>
