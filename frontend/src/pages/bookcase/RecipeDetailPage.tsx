@@ -33,8 +33,8 @@ const RecipeDetailPage = () => {
           flexDirection={{
             lg: "row",
             md: "row",
-            sm: "column-reverse",
-            xs: "column-reverse",
+            sm: "column",
+            xs: "column",
           }}
           gap="7px"
           justifyContent={{
@@ -65,9 +65,9 @@ const RecipeDetailPage = () => {
             {firstThreeTags?.map((tag: string) => (
               <Chip
                 key={tag}
-                sx={{ borderRadius: "10px", marginRight: "5px" }}
+                sx={{ borderRadius: "10px", marginRight: "5px", padding: 0 }}
                 label={
-                  <Typography fontSize={{ lg: 13, md: 12, sm: 11, xs: 10 }}>
+                  <Typography fontSize={{ lg: 15, md: 14, sm: 13, xs: 12 }}>
                     {tag}
                   </Typography>
                 }
@@ -108,7 +108,7 @@ const RecipeDetailPage = () => {
           display="flex"
           flexDirection="row"
           justifyContent="space-between"
-          alignItems="center"
+          alignItems="flex-start"
           padding="10px 0"
         >
           {/* Description */}
@@ -127,16 +127,7 @@ const RecipeDetailPage = () => {
           </Typography>
 
           {/* Date */}
-          <Typography
-            sx={
-              {
-                //   transform: "rotate(-90deg)",
-                //   whiteSpace: "nowrap",
-                //   flexShrink: 0,
-              }
-            }
-            fontSize={{ lg: 20, md: 18, sm: 16, xs: 14 }}
-          >
+          <Typography fontSize={{ lg: 20, md: 18, sm: 16, xs: 14 }}>
             {recipe?.datePublished.toDateString()}
           </Typography>
         </Box>
@@ -146,7 +137,9 @@ const RecipeDetailPage = () => {
             Ingredients
           </Typography>
 
-          <Typography>{recipe?.ingredients?.join(", ")}</Typography>
+          <Typography fontSize={{ lg: 20, md: 18, sm: 16, xs: 14 }}>
+            {recipe?.ingredients?.join(", ")}
+          </Typography>
         </Box>
 
         {/* instructions */}
@@ -172,11 +165,18 @@ const RecipeDetailPage = () => {
                 aria-controls="panel1-content"
                 id="panel1-header"
               >
-                <Typography component="span">
+                <Typography
+                  fontSize={{ lg: 20, md: 18, sm: 16, xs: 14 }}
+                  component="span"
+                >
                   {index + 1}. {instruction.summary}
                 </Typography>
               </AccordionSummary>
-              <AccordionDetails>{instruction.details}</AccordionDetails>
+              <AccordionDetails>
+                <Typography fontSize={{ lg: 18, md: 16, sm: 14, xs: 13 }}>
+                  {instruction.details}
+                </Typography>
+              </AccordionDetails>
             </Accordion>
           ))}
         </Box>

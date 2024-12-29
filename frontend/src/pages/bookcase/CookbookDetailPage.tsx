@@ -66,7 +66,7 @@ const CookbookDetailPage = () => {
             display="flex"
             flexDirection="row"
             justifyContent="space-between"
-            alignItems="center"
+            alignItems="flex-start"
             padding="10px 0"
           >
             {/* Description */}
@@ -85,16 +85,7 @@ const CookbookDetailPage = () => {
             </Typography>
 
             {/* Date */}
-            <Typography
-              sx={
-                {
-                  // transform: "rotate(-90deg)",
-                  // whiteSpace: "nowrap",
-                  // flexShrink: 0,
-                }
-              }
-              fontSize={{ lg: 20, md: 18, sm: 16, xs: 14 }}
-            >
+            <Typography fontSize={{ lg: 20, md: 18, sm: 16, xs: 14 }}>
               {cookbook?.datePublished.toDateString()}
             </Typography>
           </Box>
