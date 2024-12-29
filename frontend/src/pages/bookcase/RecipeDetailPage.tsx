@@ -149,7 +149,7 @@ const RecipeDetailPage = () => {
         )}
         {/* description and date */}
         <Box
-          marginTop="10px"
+          marginTop="15px"
           width="100%"
           display="flex"
           flexDirection="row"
@@ -178,7 +178,7 @@ const RecipeDetailPage = () => {
           </Typography>
         </Box>
         {/* ingredients */}
-        <Box width="100%" marginTop="10px">
+        <Box width="100%" marginTop="15px">
           <Typography fontSize={{ lg: 30, md: 27, sm: 24, xs: 20 }} mb={2}>
             Ingredients
           </Typography>
@@ -189,7 +189,7 @@ const RecipeDetailPage = () => {
         </Box>
 
         {/* instructions */}
-        <Box width="100%" marginTop="10px">
+        <Box width="100%" marginTop="15px">
           <Typography fontSize={{ lg: 30, md: 27, sm: 24, xs: 20 }} mb={2}>
             Instructions
           </Typography>
@@ -233,7 +233,7 @@ const RecipeDetailPage = () => {
           flexDirection="row"
           justifyContent="space-between"
           alignItems="center"
-          marginTop="10px"
+          marginTop="40px"
         >
           {/* Previous Recipe */}
           <Box flex="1" textAlign="left">

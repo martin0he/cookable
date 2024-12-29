@@ -99,10 +99,10 @@ const CookbookDetailPage = () => {
                 {recipes.map((recipe) => (
                   <RecipeBanner key={recipe.id} recipe={recipe} />
                 ))}
-                <RecipeBanner />
+                <RecipeBanner cookbook={cookbook} />
               </>
             ) : (
-              <RecipeBanner />
+              <RecipeBanner cookbook={cookbook} />
             )}
           </Box>
         </Box>

@@ -1,14 +1,15 @@
 import { Box, Chip, IconButton, Tooltip, Typography } from "@mui/material";
-import { Recipe } from "../../types";
+import { Cookbook, Recipe } from "../../types";
 import { MdAccessTime } from "react-icons/md";
 import { IoAddCircle } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 
 interface RecipeBannerProps {
   recipe?: Recipe;
+  cookbook?: Cookbook;
 }
 
-const RecipeBanner = ({ recipe }: RecipeBannerProps) => {
+const RecipeBanner = ({ recipe, cookbook }: RecipeBannerProps) => {
   const ingredients = recipe?.ingredients;
   const firstThreeIngredients = ingredients?.slice(0, 3);
   const nav = useNavigate();
@@ -116,6 +117,7 @@ const RecipeBanner = ({ recipe }: RecipeBannerProps) => {
       }}
     >
       <IconButton
+        onClick={() => nav(`/bookcase/cookbook/${cookbook?.id}/create-recipe`)}
         sx={{
           width: "100%",
           height: "100%",
