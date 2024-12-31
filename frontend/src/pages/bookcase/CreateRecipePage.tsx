@@ -1,36 +1,54 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PageLayout from "../PageLayout";
-import { Box, Button, Chip, Typography } from "@mui/material";
-import { useState } from "react";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Button,
+  Chip,
+  Typography,
+} from "@mui/material";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../AuthContext";
 import api from "../../services/api";
 import { IoIosCamera } from "react-icons/io";
+import { MdExpandMore } from "react-icons/md";
 
 const CreateRecipePage = () => {
+  const nav = useNavigate();
   const { id: cookbookId } = useParams();
   const { user } = useAuth();
   const authorId = user?.id;
+
   const [title, setTitle] = useState("");
-  const [tags, setTags] = useState<string[]>(["vegan", "healthy"]);
+  const [tags, setTags] = useState<string[]>([]);
   const [imageUrl, setImageUrl] = useState("");
   const [description, setDescription] = useState("");
-  const [ingredients, setIngredients] = useState<string[]>([""]);
+  const [ingredients, setIngredients] = useState<string[]>([]);
+  const [instructions, setInstructions] = useState<
+    { summary: string; details: string }[]
+  >([{ summary: "", details: "" }]);
+
   const [formValues, setFormValues] = useState({
     title: title,
     tags: tags,
     imageUrl: imageUrl,
     description: description,
     ingredients: ingredients,
+    instructions: instructions,
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormValues((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
+  useEffect(() => {
+    setFormValues({
+      title,
+      tags,
+      imageUrl,
+      description,
+      ingredients,
+      instructions,
+    });
+  }, [title, tags, imageUrl, description, ingredients, instructions]);
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -55,8 +73,6 @@ const CreateRecipePage = () => {
       });
 
       setImageUrl(response.data.url);
-      console.log("Uploaded Image URL:", response.data.url);
-      formValues.imageUrl = response.data.url;
     } catch (error) {
       console.error("Error uploading image:", error);
     }
@@ -65,7 +81,7 @@ const CreateRecipePage = () => {
   const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && e.currentTarget.value) {
       setTags([...tags, e.currentTarget.value.trim()]);
-      e.currentTarget.value = ""; // Clear the input field
+      e.currentTarget.value = "";
     }
   };
 
@@ -78,6 +94,22 @@ const CreateRecipePage = () => {
     updatedIngredients[index] = value;
     setIngredients(updatedIngredients);
   };
+
+  const handleInstructionChange = (
+    index: number,
+    field: "summary" | "details",
+    value: string
+  ) => {
+    const updatedInstructions = [...instructions];
+    updatedInstructions[index][field] = value;
+    setInstructions(updatedInstructions);
+  };
+
+  const addInstruction = () => {
+    setInstructions([...instructions, { summary: "", details: "" }]);
+  };
+
+  console.log(formValues);
 
   return (
     <PageLayout>
@@ -97,7 +129,7 @@ const CreateRecipePage = () => {
               type="text"
               required
               value={formValues.title}
-              onChange={handleChange}
+              onChange={(e) => setTitle(e.target.value)}
               placeholder="Type In Recipe Name"
               style={{
                 width: "100%",
@@ -160,45 +192,49 @@ const CreateRecipePage = () => {
         </Box>
 
         {/* Image Upload */}
+
         <Box width="100%">
-          <label htmlFor="file-input">
-            <input
-              id="file-input"
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              style={{ display: "none", width: "100%", height: "100%" }}
+          {imageUrl ? (
+            <img
+              src={imageUrl}
+              alt="Uploaded"
+              style={{ width: "100%", borderRadius: "7px", contain: "cover" }}
             />
-            <Button
-              sx={{
-                fontSize: { lg: 80, md: 70, sm: 60, xs: 50 },
-                textTransform: "none",
-                fontWeight: "bold",
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "#ceaea1",
-                color: "#6f5449",
-                borderRadius: "7px",
-                height: "40vh",
-                "&:hover": {
-                  backgroundColor: "#bc998a",
-                  color: "#56453e",
-                },
-              }}
-            >
-              {imageUrl ? (
-                <img
-                  src={imageUrl}
-                  alt="Uploaded"
-                  style={{ width: "100%", borderRadius: "7px" }}
-                />
-              ) : (
+          ) : (
+            <label htmlFor="file-input">
+              <input
+                id="file-input"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                style={{
+                  display: "none",
+                }}
+              />
+              <Button
+                component="span"
+                sx={{
+                  fontSize: { lg: 80, md: 70, sm: 60, xs: 50 },
+                  textTransform: "none",
+                  fontWeight: "bold",
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: "#ceaea1",
+                  color: "#6f5449",
+                  borderRadius: "7px",
+                  height: "40vh",
+                  "&:hover": {
+                    backgroundColor: "#bc998a",
+                    color: "#56453e",
+                  },
+                }}
+              >
                 <IoIosCamera />
-              )}
-            </Button>
-          </label>
+              </Button>
+            </label>
+          )}
         </Box>
 
         {/* Description Input */}
@@ -216,7 +252,7 @@ const CreateRecipePage = () => {
               name="description"
               required
               value={formValues.description}
-              onChange={handleChange}
+              onChange={(e) => setDescription(e.target.value)}
               placeholder="Add a brief description of your recipe. Share what makes it special, the inspiration behind it, or tips for serving. For example, 'A quick and easy pasta dish perfect for weeknights, with a rich tomato-basil sauce.'"
               style={{
                 width: "100%",
@@ -304,6 +340,151 @@ const CreateRecipePage = () => {
             }}
           >
             Add another...
+          </Button>
+        </Box>
+        {/* Instructions */}
+        <Box width="100%">
+          <Typography
+            fontSize={{ lg: 26, md: 23, sm: 20, xs: 18 }}
+            color="primary"
+          >
+            Instructions
+          </Typography>
+
+          {instructions.map((instruction, index) => (
+            <Accordion
+              sx={{
+                marginBottom: "10px",
+                width: "100%",
+                border: 2,
+                borderStyle: "dashed",
+                borderColor: "primary.main",
+                backgroundColor: "background.default",
+                boxShadow: 0,
+                borderRadius: "7px",
+              }}
+              key={index}
+            >
+              <AccordionSummary
+                expandIcon={<MdExpandMore />}
+                aria-controls={`panel${index + 1}-content`}
+                id={`panel${index + 1}-header`}
+                sx={{
+                  width: "100%",
+                  "&.Mui-expanded": {
+                    backgroundColor: "inherit",
+                  },
+                  "&.Mui-focused": {
+                    backgroundColor: "inherit",
+                  },
+                }}
+              >
+                <Typography
+                  fontSize={{ lg: 20, md: 18, sm: 16, xs: 14 }}
+                  width="100%"
+                >
+                  {index + 1}.{" "}
+                  <input
+                    type="text"
+                    placeholder="Insert Summary"
+                    value={instruction.summary}
+                    onChange={(e) =>
+                      handleInstructionChange(index, "summary", e.target.value)
+                    }
+                    style={{
+                      width: "90%",
+                      fontFamily: "inherit",
+                      fontSize: "inherit",
+                      border: "none",
+                      outline: "none",
+                      backgroundColor: "transparent",
+                      color: "inherit",
+                    }}
+                  />
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography fontSize={{ lg: 18, md: 16, sm: 14, xs: 13 }}>
+                  <textarea
+                    placeholder="Insert description..."
+                    value={instruction.details}
+                    onChange={(e) =>
+                      handleInstructionChange(index, "details", e.target.value)
+                    }
+                    style={{
+                      width: "100%",
+                      height: "7vh",
+                      fontFamily: "inherit",
+                      fontSize: "inherit",
+                      border: "none",
+                      outline: "none",
+                      resize: "none",
+                      backgroundColor: "transparent",
+                    }}
+                  />
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+          ))}
+
+          {/* Add New Instruction Button */}
+          <Button
+            onClick={addInstruction}
+            sx={{
+              textTransform: "none",
+              color: "#6f5449",
+              fontSize: { lg: 18, md: 16, sm: 14, xs: 12 },
+              border: "2px",
+              borderColor: "primary.main",
+              borderStyle: "dashed",
+              borderRadius: "7px",
+              padding: "10px",
+              width: "100%",
+              backgroundColor: "transparent",
+              "&:hover": {
+                borderStyle: "solid",
+              },
+              marginTop: "5px",
+            }}
+          >
+            Add another...
+          </Button>
+        </Box>
+        {/* Action buttons */}
+        <Box
+          width="100%"
+          display="flex"
+          justifyContent="space-between"
+          gap="10px"
+        >
+          <Button
+            onClick={() => nav(-1)}
+            variant="contained"
+            color="secondary"
+            sx={{
+              borderColor: "secondary.main",
+              color: "background.default",
+              "&:hover": {
+                borderColor: "secondary.dark",
+              },
+              textTransform: "lowercase",
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{
+              backgroundColor: "primary.main",
+              color: "background.default",
+              "&:hover": {
+                backgroundColor: "primary.dark",
+              },
+              textTransform: "lowercase",
+            }}
+          >
+            Save
           </Button>
         </Box>
       </Box>
