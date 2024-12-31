@@ -10,8 +10,7 @@ interface RecipeBannerProps {
 }
 
 const RecipeBanner = ({ recipe, cookbook }: RecipeBannerProps) => {
-  const ingredients = recipe?.ingredients;
-  const firstThreeIngredients = ingredients?.slice(0, 3);
+  const firstThreeIngredients = recipe?.ingredients?.slice(0, 3);
   const nav = useNavigate();
 
   return recipe ? (
@@ -65,8 +64,8 @@ const RecipeBanner = ({ recipe, cookbook }: RecipeBannerProps) => {
               }
             />
           ))}
-          {ingredients && ingredients.length > 3 && (
-            <Tooltip title={ingredients.join(", ")} arrow>
+          {recipe?.ingredients && recipe.ingredients.length > 3 && (
+            <Tooltip title={recipe.ingredients.join(", ")} arrow>
               <Chip
                 sx={{ borderRadius: "10px", marginX: "3px" }}
                 label={

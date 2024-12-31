@@ -20,7 +20,7 @@ const PageLayout = ({ children }: { children: ReactElement }) => {
       <Box
         flex="1"
         width="90%"
-        minHeight="80vh"
+        minHeight="70vh"
         marginTop="90px"
         display="flex"
         flexDirection="column"

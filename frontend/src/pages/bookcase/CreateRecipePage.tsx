@@ -4,6 +4,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Alert,
   Box,
   Button,
   Chip,
@@ -14,6 +15,7 @@ import { useAuth } from "../../AuthContext";
 import api from "../../services/api";
 import { IoIosCamera } from "react-icons/io";
 import { MdExpandMore } from "react-icons/md";
+import { AiOutlineEnter } from "react-icons/ai";
 import { useCreateRecipe } from "../../hooks/useCreateRecipe";
 
 const CreateRecipePage = () => {
@@ -28,11 +30,12 @@ const CreateRecipePage = () => {
   const [tags, setTags] = useState<string[]>([]);
   const [imageUrl, setImageUrl] = useState("");
   const [description, setDescription] = useState("");
-  const [expectedDuration, setExpectedDuration] = useState(0);
+  const [expectedDuration, setExpectedDuration] = useState("");
   const [ingredients, setIngredients] = useState<string[]>([""]);
   const [instructions, setInstructions] = useState<
     { summary: string; details: string }[]
   >([{ summary: "", details: "" }]);
+  const [formError, setFormError] = useState<string | null>(null);
 
   const [formValues, setFormValues] = useState({
     authorId: authorId || 1,
@@ -43,7 +46,7 @@ const CreateRecipePage = () => {
     ingredients: ingredients,
     instructions: instructions,
     tags: tags,
-    expectedDuration: expectedDuration,
+    expectedDuration: parseInt(expectedDuration),
   });
 
   useEffect(() => {
@@ -56,7 +59,7 @@ const CreateRecipePage = () => {
       ingredients,
       instructions,
       tags,
-      expectedDuration,
+      expectedDuration: parseInt(expectedDuration),
     });
   }, [
     title,
@@ -71,10 +74,37 @@ const CreateRecipePage = () => {
     cookbookIdNumber,
   ]);
 
+  const validateForm = () => {
+    if (!title.trim()) return "Title is required.";
+    if (!description.trim()) return "Description is required.";
+    if (!imageUrl.trim()) return "Image must be uploaded.";
+    if (!expectedDuration || isNaN(parseInt(expectedDuration)))
+      return "Expected duration is required and must be a number.";
+    if (ingredients.some((ingredient) => !ingredient.trim()))
+      return "All ingredients must be filled out.";
+    if (
+      instructions.some(
+        (instruction) =>
+          !instruction.summary.trim() || !instruction.details.trim()
+      )
+    )
+      return "All instructions must have a summary and details.";
+    return null;
+  };
+
   const handleSave = async () => {
+    const error = validateForm();
+    if (error) {
+      setFormError(error);
+      // scroll to the top of the page to show the error message
+      window.scrollTo(0, 0);
+      return;
+    }
+    setFormError(null);
+
     try {
       await mutate(formValues);
-      nav(`/bookcase/cookbooks/${cookbookId}`);
+      nav(`/bookcase/cookbook/${cookbookId}`);
     } catch (error) {
       console.error("Error creating recipe:", error);
     }
@@ -139,8 +169,6 @@ const CreateRecipePage = () => {
     setInstructions([...instructions, { summary: "", details: "" }]);
   };
 
-  console.log(formValues);
-
   return (
     <PageLayout>
       <Box
@@ -151,6 +179,19 @@ const CreateRecipePage = () => {
         justifyContent="center"
         rowGap="25px"
       >
+        {/* Form Error Display */}
+        {formError && (
+          <Alert
+            onClose={() => setFormError(null)}
+            sx={{ width: "100%", borderRadius: "7px" }}
+            color="error"
+            severity="error"
+            variant="outlined"
+          >
+            {formError}
+          </Alert>
+        )}
+
         {/* Title Input */}
         <Box width="100%">
           <Typography fontSize={{ lg: 33, md: 30, sm: 27, xs: 24 }}>
@@ -189,7 +230,13 @@ const CreateRecipePage = () => {
             gap: "4px",
           }}
         >
-          <Typography fontSize={{ lg: 17, md: 16, sm: 15, xs: 14 }} flex={1}>
+          <Typography
+            fontSize={{ lg: 17, md: 16, sm: 15, xs: 14 }}
+            flex={1}
+            flexDirection="row"
+            display="flex"
+            alignItems="center"
+          >
             <input
               type="text"
               placeholder="add tags..."
@@ -205,6 +252,7 @@ const CreateRecipePage = () => {
                 width: "100%",
               }}
             />
+            {tags.length < 1 && <AiOutlineEnter color="inherit" />}
           </Typography>
 
           {tags.map((tag, index) => (
@@ -250,12 +298,12 @@ const CreateRecipePage = () => {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  backgroundColor: "#ceaea1",
+                  backgroundColor: "#F3EDDF",
                   color: "#6f5449",
                   borderRadius: "7px",
                   height: "40vh",
                   "&:hover": {
-                    backgroundColor: "#bc998a",
+                    backgroundColor: "#e1d8c1",
                     color: "#56453e",
                   },
                 }}
@@ -372,7 +420,7 @@ const CreateRecipePage = () => {
           </Button>
         </Box>
         {/* Instructions */}
-        <Box width="100%">
+        <Box width="100%" marginTop="15px">
           <Box
             width="100%"
             display="flex"
@@ -385,29 +433,28 @@ const CreateRecipePage = () => {
             >
               Instructions
             </Typography>
-            <Box display="flex" flexDirection="row" columnGap="10px">
-              <Typography fontSize={{ lg: 20, md: 18, sm: 16, xs: 14 }}>
-                Expected Duration:{" "}
-              </Typography>
-              <Typography fontSize={{ lg: 20, md: 18, sm: 16, xs: 14 }}>
-                <input
-                  type="number"
-                  value={expectedDuration}
-                  onChange={(e) => setExpectedDuration(e.target.valueAsNumber)}
-                  style={{
-                    fontSize: "inherit",
-                    fontFamily: "inherit",
-                    outline: "none",
-                    border: "none",
-                    backgroundColor: "transparent",
-                    color: "inherit",
-                    width: "60px",
-                    height: "fit-content",
-                  }}
-                />{" "}
-                minutes
-              </Typography>
-            </Box>
+
+            <Typography
+              fontSize={{ lg: 20, md: 18, sm: 16, xs: 14 }}
+              textAlign={"right"}
+            >
+              <input
+                type="text"
+                value={expectedDuration}
+                placeholder="Expected Duration (min)"
+                onChange={(e) => setExpectedDuration(e.target.value)}
+                style={{
+                  fontSize: "inherit",
+                  fontFamily: "inherit",
+                  outline: "none",
+                  border: "none",
+                  backgroundColor: "transparent",
+                  color: "inherit",
+                  textAlign: "right",
+                }}
+              />
+              {expectedDuration !== "" && " minutes"}
+            </Typography>
           </Box>
 
           {instructions.map((instruction, index) => (

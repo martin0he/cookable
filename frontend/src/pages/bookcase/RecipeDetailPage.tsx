@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { MdArrowBack, MdExpandMore } from "react-icons/md";
+import { FaClock } from "react-icons/fa6";
 import { useGetRecipe } from "../../hooks/useGetRecipe";
 import { useGetAllRecipesInCookbook } from "../../hooks/useGetAllRecipesInCookbook";
 
@@ -120,7 +121,7 @@ const RecipeDetailPage = () => {
               />
             ))}
             {recipe?.tags && recipe?.tags?.length > 3 && (
-              <Tooltip title={recipe.tags.join()} arrow>
+              <Tooltip title={recipe.tags.join(", ")} arrow>
                 <Chip
                   sx={{ borderRadius: "10px", marginX: "3px" }}
                   label={
@@ -190,9 +191,29 @@ const RecipeDetailPage = () => {
 
         {/* instructions */}
         <Box width="100%" marginTop="15px">
-          <Typography fontSize={{ lg: 30, md: 27, sm: 24, xs: 20 }} mb={2}>
-            Instructions
-          </Typography>
+          <Box
+            width="100%"
+            display="flex"
+            flexDirection="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography fontSize={{ lg: 30, md: 27, sm: 24, xs: 20 }} mb={2}>
+              Instructions
+            </Typography>
+            <Typography
+              fontSize={{ lg: 20, md: 18, sm: 16, xs: 14 }}
+              display="flex"
+              alignItems="flex-start"
+              flexDirection="row"
+              columnGap="10px"
+              height="wrap-content"
+            >
+              <FaClock />
+              {recipe?.expectedDuration} minutes
+            </Typography>
+          </Box>
+
           {recipe?.instructions?.map((instruction, index) => (
             <Accordion
               sx={{
