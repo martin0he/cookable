@@ -1,8 +1,12 @@
 import { Box } from "@mui/material";
-import { ReactElement } from "react";
+import { ReactElement, useEffect } from "react";
 import Navbar from "../components/navigation/Navbar";
 
 const PageLayout = ({ children }: { children: ReactElement }) => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <Box
       display="flex"

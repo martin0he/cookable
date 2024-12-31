@@ -14,41 +14,71 @@ import { useAuth } from "../../AuthContext";
 import api from "../../services/api";
 import { IoIosCamera } from "react-icons/io";
 import { MdExpandMore } from "react-icons/md";
+import { useCreateRecipe } from "../../hooks/useCreateRecipe";
 
 const CreateRecipePage = () => {
   const nav = useNavigate();
   const { id: cookbookId } = useParams();
+  const cookbookIdNumber = parseInt(cookbookId || "1");
   const { user } = useAuth();
   const authorId = user?.id;
+  const { mutate } = useCreateRecipe();
 
   const [title, setTitle] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [imageUrl, setImageUrl] = useState("");
   const [description, setDescription] = useState("");
-  const [ingredients, setIngredients] = useState<string[]>([]);
+  const [expectedDuration, setExpectedDuration] = useState(0);
+  const [ingredients, setIngredients] = useState<string[]>([""]);
   const [instructions, setInstructions] = useState<
     { summary: string; details: string }[]
   >([{ summary: "", details: "" }]);
 
   const [formValues, setFormValues] = useState({
+    authorId: authorId || 1,
+    cookbookId: cookbookIdNumber,
     title: title,
-    tags: tags,
-    imageUrl: imageUrl,
     description: description,
+    imageUrl: imageUrl,
     ingredients: ingredients,
     instructions: instructions,
+    tags: tags,
+    expectedDuration: expectedDuration,
   });
 
   useEffect(() => {
     setFormValues({
+      authorId: authorId || 1,
+      cookbookId: cookbookIdNumber,
       title,
-      tags,
-      imageUrl,
       description,
+      imageUrl,
       ingredients,
       instructions,
+      tags,
+      expectedDuration,
     });
-  }, [title, tags, imageUrl, description, ingredients, instructions]);
+  }, [
+    title,
+    tags,
+    imageUrl,
+    description,
+    ingredients,
+    instructions,
+    expectedDuration,
+    authorId,
+    cookbookId,
+    cookbookIdNumber,
+  ]);
+
+  const handleSave = async () => {
+    try {
+      await mutate(formValues);
+      nav(`/bookcase/cookbooks/${cookbookId}`);
+    } catch (error) {
+      console.error("Error creating recipe:", error);
+    }
+  };
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -192,7 +222,6 @@ const CreateRecipePage = () => {
         </Box>
 
         {/* Image Upload */}
-
         <Box width="100%">
           {imageUrl ? (
             <img
@@ -256,7 +285,7 @@ const CreateRecipePage = () => {
               placeholder="Add a brief description of your recipe. Share what makes it special, the inspiration behind it, or tips for serving. For example, 'A quick and easy pasta dish perfect for weeknights, with a rich tomato-basil sauce.'"
               style={{
                 width: "100%",
-                height: "20vh",
+                height: "15vh",
                 lineHeight: "1.5",
                 fontSize: "inherit",
                 fontFamily: "inherit",
@@ -344,12 +373,42 @@ const CreateRecipePage = () => {
         </Box>
         {/* Instructions */}
         <Box width="100%">
-          <Typography
-            fontSize={{ lg: 26, md: 23, sm: 20, xs: 18 }}
-            color="primary"
+          <Box
+            width="100%"
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
           >
-            Instructions
-          </Typography>
+            <Typography
+              fontSize={{ lg: 26, md: 23, sm: 20, xs: 18 }}
+              color="primary"
+            >
+              Instructions
+            </Typography>
+            <Box display="flex" flexDirection="row" columnGap="10px">
+              <Typography fontSize={{ lg: 20, md: 18, sm: 16, xs: 14 }}>
+                Expected Duration:{" "}
+              </Typography>
+              <Typography fontSize={{ lg: 20, md: 18, sm: 16, xs: 14 }}>
+                <input
+                  type="number"
+                  value={expectedDuration}
+                  onChange={(e) => setExpectedDuration(e.target.valueAsNumber)}
+                  style={{
+                    fontSize: "inherit",
+                    fontFamily: "inherit",
+                    outline: "none",
+                    border: "none",
+                    backgroundColor: "transparent",
+                    color: "inherit",
+                    width: "60px",
+                    height: "fit-content",
+                  }}
+                />{" "}
+                minutes
+              </Typography>
+            </Box>
+          </Box>
 
           {instructions.map((instruction, index) => (
             <Accordion
@@ -473,6 +532,7 @@ const CreateRecipePage = () => {
             Cancel
           </Button>
           <Button
+            onClick={handleSave}
             variant="contained"
             color="primary"
             sx={{
