@@ -26,7 +26,7 @@ const getCookbookRecipeTally = async (): Promise<Record<string, number>> => {
     const count = recipes.filter(
       (recipe) => recipe.cookbookId === cookbook.id
     ).length;
-    cookbookRecipeTally[cookbook.title] = count;
+    cookbookRecipeTally[cookbook.id] = count;
   });
 
   return cookbookRecipeTally;
