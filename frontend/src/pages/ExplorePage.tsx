@@ -1,16 +1,52 @@
 import {
   Box,
+  Button,
+  Chip,
+  Slider,
   ToggleButton,
   ToggleButtonGroup,
   Typography,
 } from "@mui/material";
 import PageLayout from "./PageLayout";
 import { useState } from "react";
+import { useGetAllRecipes } from "../hooks/getAllRecipes";
 
 const ExplorePage = () => {
+  // fetching data
+
+  // gather all recipes and find the lowest and highest expected duration
+  const { data: allRecipes } = useGetAllRecipes();
+
+  const allDurations = allRecipes
+    ?.map((recipe) => recipe.expectedDuration)
+    .filter((duration): duration is number => duration !== null);
+  const minimumExpectedDuration =
+    allDurations && allDurations.length > 1 ? Math.min(...allDurations) : 0;
+  const maximumExpectedDuration =
+    allDurations && allDurations.length > 1 ? Math.max(...allDurations) : 180;
+
+  // gather all existing tags
+  const allTagLists = allRecipes
+    ?.map((recipe) => recipe.tags)
+    .filter((tags): tags is string[] => tags !== null);
+  // remove duplicates and flatten array
+  const allTags = allTagLists?.reduce((acc, tags) => {
+    tags.forEach((tag) => {
+      if (!acc.includes(tag)) {
+        acc.push(tag);
+      }
+    });
+    return acc;
+  }, [] as string[]);
+
+  // state variables
   const [searchInput, setSearchInput] = useState("");
   const [dataType, setDataType] = useState("recipe");
   const [chronology, setChronology] = useState("newest");
+  const [expectedDuration, setExpectedDuration] = useState(
+    minimumExpectedDuration
+  );
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const handleDataTypeChange = (
     event: React.MouseEvent<HTMLElement>,
@@ -25,6 +61,24 @@ const ExplorePage = () => {
   ) => {
     setChronology(newChronology);
   };
+
+  const handleDurationChange = (event: Event, newValue: number | number[]) => {
+    setExpectedDuration(newValue as number);
+  };
+
+  const handleTagToggle = (event: React.MouseEvent<HTMLElement>) => {
+    const tag = event.currentTarget.textContent;
+    if (selectedTags.includes(tag as string)) {
+      setSelectedTags(
+        selectedTags.filter((selectedTag) => selectedTag !== tag)
+      );
+    } else {
+      if (tag) {
+        setSelectedTags([...selectedTags, tag]);
+      }
+    }
+  };
+  console.log(selectedTags);
 
   return (
     <PageLayout>
@@ -179,6 +233,71 @@ const ExplorePage = () => {
             </ToggleButton>
           </ToggleButtonGroup>
           {/* expected duration slider */}
+          <Box
+            marginY="15px"
+            display="flex"
+            flexDirection="column"
+            width="100%"
+            justifyContent="center"
+            alignItems="flex-start"
+          >
+            <Typography fontSize={{ lg: 18, md: 16, sm: 16, xs: 20 }}>
+              Expected Duration
+            </Typography>
+            <Slider
+              aria-label="Volume"
+              valueLabelDisplay="auto"
+              min={minimumExpectedDuration}
+              max={maximumExpectedDuration}
+              value={expectedDuration}
+              onChange={handleDurationChange}
+              sx={{ width: "97%" }}
+            />
+          </Box>
+          {/* tags select */}
+          <Box
+            display="flex"
+            flexDirection="column"
+            width="100%"
+            justifyContent="center"
+            alignItems="flex-start"
+          >
+            <Typography fontSize={{ lg: 18, md: 16, sm: 16, xs: 20 }}>
+              Tags
+            </Typography>
+            <Box width="100%">
+              {allTags?.map((tag) => (
+                <Button
+                  key={tag}
+                  onClick={handleTagToggle}
+                  sx={{
+                    padding: 0,
+                    width: "fit-content",
+                    borderRadius: "8px",
+                    margin: "4px",
+                  }}
+                >
+                  <Chip
+                    key={tag}
+                    label={tag}
+                    sx={{
+                      borderRadius: "inherit",
+                      textTransform: "none",
+                      border: "1.8px",
+                      borderStyle: "dashed",
+                      borderColor: "primary.main",
+                      backgroundColor: selectedTags.includes(tag)
+                        ? "primary.main"
+                        : "transparent",
+                      color: selectedTags.includes(tag)
+                        ? "white"
+                        : "primary.main",
+                    }}
+                  />
+                </Button>
+              ))}
+            </Box>
+          </Box>
         </Box>
         {/* search + body */}
         <Box
