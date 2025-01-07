@@ -9,7 +9,8 @@ import {
 } from "@mui/material";
 import PageLayout from "./PageLayout";
 import { useState } from "react";
-import { useGetAllRecipes } from "../hooks/getAllRecipes";
+import { useGetAllRecipes } from "../hooks/useGetAllRecipes";
+import { useGetCookbookRecipeTally } from "../hooks/useGetCookbookRecipeTally";
 
 const ExplorePage = () => {
   // fetching data
@@ -39,6 +40,14 @@ const ExplorePage = () => {
     return acc;
   }, [] as string[]);
 
+  // gather all cookbooks and find the lowest and highest number of recipes
+  const { data: cookbookTally } = useGetCookbookRecipeTally();
+  const allNumRecipes = Object.values(cookbookTally || {});
+  const minimumNumRecipes =
+    allNumRecipes && allNumRecipes.length > 1 ? Math.min(...allNumRecipes) : 0;
+  const maximmumNumRecipes =
+    allNumRecipes && allNumRecipes.length > 1 ? Math.max(...allNumRecipes) : 40;
+
   // state variables
   const [searchInput, setSearchInput] = useState("");
   const [dataType, setDataType] = useState("recipe");
@@ -47,6 +56,7 @@ const ExplorePage = () => {
     minimumExpectedDuration
   );
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [numRecipes, setNumRecipes] = useState(minimumNumRecipes);
 
   const handleDataTypeChange = (
     event: React.MouseEvent<HTMLElement>,
@@ -78,7 +88,10 @@ const ExplorePage = () => {
       }
     }
   };
-  console.log(selectedTags);
+
+  const handleRecipeNumChange = (event: Event, newValue: number | number[]) => {
+    setNumRecipes(newValue as number);
+  };
 
   return (
     <PageLayout>
@@ -232,72 +245,102 @@ const ExplorePage = () => {
               </Typography>
             </ToggleButton>
           </ToggleButtonGroup>
-          {/* expected duration slider */}
-          <Box
-            marginY="15px"
-            display="flex"
-            flexDirection="column"
-            width="100%"
-            justifyContent="center"
-            alignItems="flex-start"
-          >
-            <Typography fontSize={{ lg: 18, md: 16, sm: 16, xs: 20 }}>
-              Expected Duration
-            </Typography>
-            <Slider
-              aria-label="Volume"
-              valueLabelDisplay="auto"
-              min={minimumExpectedDuration}
-              max={maximumExpectedDuration}
-              value={expectedDuration}
-              onChange={handleDurationChange}
-              sx={{ width: "97%" }}
-            />
-          </Box>
-          {/* tags select */}
-          <Box
-            display="flex"
-            flexDirection="column"
-            width="100%"
-            justifyContent="center"
-            alignItems="flex-start"
-          >
-            <Typography fontSize={{ lg: 18, md: 16, sm: 16, xs: 20 }}>
-              Tags
-            </Typography>
-            <Box width="100%">
-              {allTags?.map((tag) => (
-                <Button
-                  key={tag}
-                  onClick={handleTagToggle}
-                  sx={{
-                    padding: 0,
-                    width: "fit-content",
-                    borderRadius: "8px",
-                    margin: "4px",
-                  }}
-                >
-                  <Chip
-                    key={tag}
-                    label={tag}
-                    sx={{
-                      borderRadius: "inherit",
-                      textTransform: "none",
-                      border: "1.8px",
-                      borderStyle: "dashed",
-                      borderColor: "primary.main",
-                      backgroundColor: selectedTags.includes(tag)
-                        ? "primary.main"
-                        : "transparent",
-                      color: selectedTags.includes(tag)
-                        ? "white"
-                        : "primary.main",
-                    }}
-                  />
-                </Button>
-              ))}
-            </Box>
-          </Box>
+          {dataType === "recipe" ? (
+            <>
+              {/* recipe only filters */}
+              {/* expected duration slider */}
+              <Box
+                marginY="15px"
+                display="flex"
+                flexDirection="column"
+                width="100%"
+                justifyContent="center"
+                alignItems="flex-start"
+              >
+                <Typography fontSize={{ lg: 18, md: 16, sm: 16, xs: 20 }}>
+                  Expected Duration
+                </Typography>
+                <Slider
+                  aria-label="Volume"
+                  valueLabelDisplay="auto"
+                  min={minimumExpectedDuration}
+                  max={maximumExpectedDuration}
+                  value={expectedDuration}
+                  onChange={handleDurationChange}
+                  sx={{ width: "97%" }}
+                />
+              </Box>
+              {/* tags select */}
+              <Box
+                display="flex"
+                flexDirection="column"
+                width="100%"
+                justifyContent="center"
+                alignItems="flex-start"
+              >
+                <Typography fontSize={{ lg: 18, md: 16, sm: 16, xs: 20 }}>
+                  Tags
+                </Typography>
+                <Box width="100%">
+                  {allTags?.map((tag) => (
+                    <Button
+                      key={tag}
+                      onClick={handleTagToggle}
+                      sx={{
+                        padding: 0,
+                        width: "fit-content",
+                        borderRadius: "8px",
+                        margin: "4px",
+                      }}
+                    >
+                      <Chip
+                        key={tag}
+                        label={tag}
+                        sx={{
+                          borderRadius: "inherit",
+                          textTransform: "none",
+                          border: "1.8px",
+                          borderStyle: "dashed",
+                          borderColor: "primary.main",
+                          backgroundColor: selectedTags.includes(tag)
+                            ? "primary.main"
+                            : "transparent",
+                          color: selectedTags.includes(tag)
+                            ? "white"
+                            : "primary.main",
+                        }}
+                      />
+                    </Button>
+                  ))}
+                </Box>
+              </Box>
+            </>
+          ) : (
+            <>
+              {/* cookbook only filters */}
+              <Box
+                marginY="15px"
+                display="flex"
+                flexDirection="column"
+                width="100%"
+                justifyContent="center"
+                alignItems="flex-start"
+              >
+                <Typography fontSize={{ lg: 18, md: 16, sm: 16, xs: 20 }}>
+                  No. Recipes
+                </Typography>
+                <Slider
+                  aria-label="Volume"
+                  valueLabelDisplay="auto"
+                  min={minimumNumRecipes}
+                  max={maximmumNumRecipes}
+                  value={numRecipes}
+                  onChange={handleRecipeNumChange}
+                  sx={{ width: "97%" }}
+                />
+              </Box>
+            </>
+          )}
         </Box>
         {/* search + body */}
         <Box
