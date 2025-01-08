@@ -8,16 +8,21 @@ import {
   Typography,
 } from "@mui/material";
 import PageLayout from "./PageLayout";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useGetAllRecipes } from "../hooks/useGetAllRecipes";
 import { useGetCookbookRecipeTally } from "../hooks/useGetCookbookRecipeTally";
+import { useGetAllCookbooks } from "../hooks/useGetAllCookbooks";
+import { Cookbook, Recipe } from "../types";
+import { useNavigate } from "react-router-dom";
+import ItemCard from "../components/explore/ItemCard";
 
 const ExplorePage = () => {
+  const nav = useNavigate();
   // fetching data
+  const { data: allRecipes } = useGetAllRecipes();
+  const { data: allCookbooks } = useGetAllCookbooks();
 
   // gather all recipes and find the lowest and highest expected duration
-  const { data: allRecipes } = useGetAllRecipes();
-
   const allDurations = allRecipes
     ?.map((recipe) => recipe.expectedDuration)
     .filter((duration): duration is number => duration !== null);
@@ -92,6 +97,109 @@ const ExplorePage = () => {
   const handleRecipeNumChange = (event: Event, newValue: number | number[]) => {
     setNumRecipes(newValue as number);
   };
+
+  const applyFilters = ({
+    dataType,
+    recipes,
+    cookbooks,
+    searchInput,
+    expectedDuration,
+    selectedTags,
+    numRecipes,
+    chronology,
+  }: {
+    dataType: string;
+    recipes: Recipe[] | undefined;
+    cookbooks: Cookbook[] | undefined;
+    searchInput: string;
+    expectedDuration: number;
+    selectedTags: string[];
+    numRecipes: number;
+    chronology: string;
+  }) => {
+    if (dataType === "recipe" && recipes) {
+      return recipes
+        .filter((recipe) => {
+          // filter by search input
+          if (
+            searchInput &&
+            !recipe.title.toLowerCase().includes(searchInput.toLowerCase())
+          ) {
+            return false;
+          }
+          // filter by expected duration
+          if (
+            recipe.expectedDuration &&
+            recipe.expectedDuration < expectedDuration
+          ) {
+            return false;
+          }
+          // filter by tags
+          if (
+            selectedTags.length > 0 &&
+            (!recipe.tags ||
+              !selectedTags.some((tag) => recipe.tags?.includes(tag)))
+          ) {
+            return false;
+          }
+          return true;
+        })
+        .sort((a, b) => {
+          // sort by chronology
+          if (chronology === "newest") {
+            return (
+              new Date(b.datePublished).getTime() -
+              new Date(a.datePublished).getTime()
+            );
+          }
+          return (
+            new Date(a.datePublished).getTime() -
+            new Date(b.datePublished).getTime()
+          );
+        });
+    }
+
+    if (dataType === "cookbook" && cookbooks) {
+      return cookbooks.filter((cookbook) => {
+        // filter by search input
+        if (
+          searchInput &&
+          !cookbook.title.toLowerCase().includes(searchInput.toLowerCase())
+        ) {
+          return false;
+        }
+        // filter by number of recipes
+        const cookbookRecipeCount = numRecipes;
+        if (cookbookRecipeCount > numRecipes) {
+          return false;
+        }
+        return true;
+      });
+    }
+
+    return [];
+  };
+  const filteredData = useMemo(() => {
+    return applyFilters({
+      dataType,
+      recipes: allRecipes,
+      cookbooks: allCookbooks,
+      searchInput,
+      expectedDuration,
+      selectedTags,
+      numRecipes,
+      chronology,
+    });
+  }, [
+    dataType,
+    allRecipes,
+    allCookbooks,
+    searchInput,
+    expectedDuration,
+    selectedTags,
+    numRecipes,
+    chronology,
+  ]);
 
   return (
     <PageLayout>
@@ -391,6 +499,32 @@ const ExplorePage = () => {
                 }}
               />
             </Typography>
+          </Box>
+          {/* filter and render recipes/ */}
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "space-between",
+              alignItems: "flex-start",
+              gap: "16px",
+              padding: "16px",
+              width: "100%",
+            }}
+          >
+            {dataType === "recipe"
+              ? filteredData.map((recipe) => (
+                  <ItemCard
+                    data={recipe}
+                    onClick={() => nav(`/bookcase/recipe/${recipe.id}`)}
+                  />
+                ))
+              : filteredData.map((cookbook) => (
+                  <ItemCard
+                    data={cookbook}
+                    onClick={() => nav(`/bookcase/cookbook/${cookbook.id}`)}
+                  />
+                ))}
           </Box>
         </Box>
       </Box>
