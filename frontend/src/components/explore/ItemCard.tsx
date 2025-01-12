@@ -41,6 +41,10 @@ const ItemCard = ({ data, onClick }: ItemCardProps) => {
       {/* Description */}
       <Typography
         width={{ lg: "15vw" }}
+        marginTop="14px"
+        height="12vh"
+        overflow={"hidden"}
+        textOverflow={"ellipsis"}
         fontSize={{ lg: 21, md: 17, sm: 23, xs: 23 }}
         sx={{
           flexGrow: 1,

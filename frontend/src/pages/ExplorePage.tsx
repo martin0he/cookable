@@ -459,7 +459,6 @@ const ExplorePage = () => {
           alignItems="center"
           justifyContent="flex-start"
           rowGap="25px"
-          border={1}
         >
           {/* search bar */}
           <Box
