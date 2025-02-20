@@ -55,7 +55,7 @@ const ExplorePage = () => {
 
   // state variables
   const [searchInput, setSearchInput] = useState("");
-  const [dataType, setDataType] = useState("recipe");
+  const [dataType, setDataType] = useState("cookbook");
   const [chronology, setChronology] = useState("newest");
   const [expectedDuration, setExpectedDuration] = useState(
     minimumExpectedDuration

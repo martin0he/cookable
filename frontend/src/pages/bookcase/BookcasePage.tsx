@@ -55,9 +55,11 @@ const BookcasePage = () => {
         >
           {cookbooks.map((cookbook) => (
             <Box
+              display="flex"
+              justifyContent="center"
               width={{
-                xs: "90%",
-                sm: "90%",
+                xs: "100%",
+                sm: "100%",
                 md: "fit-content",
               }}
               key={cookbook.id}
