@@ -49,18 +49,18 @@ const BookcasePage = () => {
           width={{ xs: "100%", md: "64%" }}
           sx={{
             height: "100%",
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "10px",
           }}
         >
-          <Grid container spacing={3} columns={3}>
-            {cookbooks.map((cookbook) => (
-              <Grid key={cookbook.id} size={1}>
-                <CookbookCard
-                  cookbook={cookbook}
-                  onClick={() => nav(`cookbook/${cookbook.id}`)}
-                />
-              </Grid>
-            ))}
-          </Grid>
+          {cookbooks.map((cookbook) => (
+            <CookbookCard
+              key={cookbook.id}
+              cookbook={cookbook}
+              onClick={() => nav(`cookbook/${cookbook.id}`)}
+            />
+          ))}
         </Box>
 
         {/* Create New Cookbook Section */}

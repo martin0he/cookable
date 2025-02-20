@@ -18,6 +18,7 @@ const CookbookCard = ({ cookbook, onClick }: CookbookCardProps) => {
       position="relative"
       width="185px"
       height="220px"
+      margin="9px"
       onClick={() => onClick(cookbook.id)}
       sx={{
         cursor: "pointer",
