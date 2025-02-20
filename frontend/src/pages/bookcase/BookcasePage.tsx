@@ -1,5 +1,4 @@
 import { Box, IconButton, Typography } from "@mui/material";
-import Grid from "@mui/material/Grid2";
 import PageLayout from "../PageLayout";
 import { Cookbook } from "../../types";
 import { useEffect, useState } from "react";

@@ -20,6 +20,7 @@ const ItemCard = ({ data, onClick }: ItemCardProps) => {
       padding="8px"
       display="flex"
       flexDirection="column"
+      flexGrow={1}
       sx={{
         border: "2px",
         borderRadius: "8px",
@@ -78,9 +79,9 @@ const ItemCard = ({ data, onClick }: ItemCardProps) => {
               />
             ))}
         </Box>
-        {isRecipe(data) && (
+        {isRecipe(data) && data.imageUrl && (
           <img
-            src={data.imageUrl ?? ""}
+            src={data.imageUrl}
             alt={data.title}
             style={{
               width: "100px",
@@ -90,9 +91,9 @@ const ItemCard = ({ data, onClick }: ItemCardProps) => {
             }}
           />
         )}
-        {!isRecipe(data) && (
+        {!isRecipe(data) && (data as Cookbook).coverImageUrl && (
           <img
-            src={(data as Cookbook).coverImageUrl ?? ""}
+            src={(data as Cookbook).coverImageUrl as string}
             alt={data.title}
             style={{
               width: "100px",

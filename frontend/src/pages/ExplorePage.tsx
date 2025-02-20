@@ -206,7 +206,12 @@ const ExplorePage = () => {
       <Box
         width={{ lg: "95%", md: "70%", sm: "80%", xs: "90%" }}
         display="flex"
-        flexDirection={{ lg: "row", md: "row", sm: "column", xs: "column" }}
+        flexDirection={{
+          lg: "row",
+          md: "row",
+          sm: "column",
+          xs: "column",
+        }}
         alignItems="flex-start"
         justifyContent="center"
         columnGap="25px"
@@ -215,8 +220,8 @@ const ExplorePage = () => {
         {/* sticky filter bar */}
         <Box
           width={{ lg: "28%", md: "28%", sm: "100%", xs: "100%" }}
-          minHeight="83vh"
-          position="sticky"
+          minHeight={{ md: "83vh", sm: "fit-content", xs: "fit-content" }}
+          position={{ lg: "sticky", md: "sticky", sm: "static", xs: "static" }}
           padding="20px"
           display="flex"
           flexDirection="column"
@@ -454,7 +459,7 @@ const ExplorePage = () => {
         <Box
           display="flex"
           width={{ lg: "72%", md: "72%", sm: "100%", xs: "100%" }}
-          height="83vh"
+          height={{ md: "83vh", sm: "fit-content", xs: "fit-content" }}
           flexDirection="column"
           alignItems="center"
           justifyContent="flex-start"
@@ -507,7 +512,7 @@ const ExplorePage = () => {
               justifyContent: "space-between",
               alignItems: "flex-start",
               gap: "16px",
-              padding: "16px",
+              paddingBottom: "20px",
               width: "100%",
             }}
           >
