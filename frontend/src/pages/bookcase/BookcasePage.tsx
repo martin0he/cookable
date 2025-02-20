@@ -55,11 +55,20 @@ const BookcasePage = () => {
           }}
         >
           {cookbooks.map((cookbook) => (
-            <CookbookCard
+            <Box
+              width={{
+                xs: "90%",
+                sm: "90%",
+                md: "fit-content",
+              }}
               key={cookbook.id}
-              cookbook={cookbook}
-              onClick={() => nav(`cookbook/${cookbook.id}`)}
-            />
+            >
+              <CookbookCard
+                key={cookbook.id}
+                cookbook={cookbook}
+                onClick={() => nav(`cookbook/${cookbook.id}`)}
+              />
+            </Box>
           ))}
         </Box>
 

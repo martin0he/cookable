@@ -16,7 +16,7 @@ const CookbookCard = ({ cookbook, onClick }: CookbookCardProps) => {
   return (
     <Box
       position="relative"
-      width="185px"
+      width={{ md: "185px", sm: "100%", xs: "100%" }}
       height="220px"
       margin="9px"
       onClick={() => onClick(cookbook.id)}
@@ -32,7 +32,7 @@ const CookbookCard = ({ cookbook, onClick }: CookbookCardProps) => {
         position="absolute"
         top="10px"
         left="10px"
-        width="185px"
+        width={{ md: "185px", sm: "100%", xs: "100%" }}
         height="220px"
         borderRadius="3px"
         sx={{ backgroundColor: shade2 }}
@@ -42,7 +42,7 @@ const CookbookCard = ({ cookbook, onClick }: CookbookCardProps) => {
         position="absolute"
         top="5px"
         left="5px"
-        width="185px"
+        width={{ md: "185px", sm: "100%", xs: "100%" }}
         height="220px"
         borderRadius="3px"
         sx={{ backgroundColor: shade1 }}
@@ -51,7 +51,7 @@ const CookbookCard = ({ cookbook, onClick }: CookbookCardProps) => {
       <Box
         position="relative"
         borderRadius="3px"
-        width="185px"
+        width={{ md: "185px", sm: "100%", xs: "100%" }}
         height="220px"
         padding="10px"
         sx={{ backgroundColor: mainColor, overflow: "hidden" }}
