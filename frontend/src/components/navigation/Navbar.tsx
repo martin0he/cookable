@@ -16,7 +16,7 @@ import AvatarMenu from "./Avatar";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
 
-const Navbar = () => {
+const Navbar = ({ isLandingPage }: { isLandingPage?: boolean }) => {
   const [opacity, setOpacity] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
   const theme = useTheme();
@@ -50,8 +50,9 @@ const Navbar = () => {
       position="fixed"
       top="0"
       sx={{
-        backgroundColor: `rgba(255, 250, 240, ${opacity})`,
+        backgroundColor: `rgba(254, 250, 240, ${isLandingPage ? 0 : opacity})`,
         backdropFilter: `blur(10px)`,
+        WebkitBackdropFilter: `blur(10px)`,
         zIndex: 1000,
       }}
     >

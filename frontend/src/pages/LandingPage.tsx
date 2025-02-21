@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { useAuth } from "../AuthContext";
-import { useNavigate } from "react-router-dom";
-import CustomButton from "../components/general/CustomButton";
+import Navbar from "../components/navigation/Navbar";
+import { Link } from "react-router-dom";
 
 const SectionOne = () => {
   return (
@@ -32,6 +32,22 @@ const SectionOne = () => {
       >
         cookable
       </Typography>
+      <Link to="/bookcase" style={{ textDecoration: "none" }}>
+        <Typography
+          fontSize={{ xs: 20, sm: 24, md: 27, lg: 30 }}
+          color="secondary.main"
+          fontWeight="550"
+          sx={{
+            cursor: "pointer",
+            transition: "color 0.2s ease-in-out",
+            "&:hover": {
+              color: "secondary.dark",
+            },
+          }}
+        >
+          get started
+        </Typography>
+      </Link>
     </Box>
   );
 };
@@ -178,36 +194,19 @@ const SectionThree = () => {
   );
 };
 
-const ContinueButton = () => {
-  const nav = useNavigate();
-  return (
-    <Box
-      position="fixed"
-      bottom="30px"
-      right={{ lg: "30px", md: "30px", sm: "20px", xs: "20px" }}
-    >
-      <CustomButton
-        text="continue"
-        fontSize={20}
-        onClick={() => nav("/about")}
-      />
-    </Box>
-  );
-};
-
 const LandingPage = () => {
   const { user } = useAuth();
   console.log(user);
 
   return (
-    <Box display="flex" flexDirection="column" width="100%">
+    <Box width="100%" display="flex" flexDirection="column" alignItems="center">
+      <Navbar isLandingPage />
       {/* Section 1 */}
       <SectionOne />
       {/* Section 2 */}
       <SectionTwo />
       {/* Section 3 */}
       <SectionThree />
-      <ContinueButton />
     </Box>
   );
 };
