@@ -160,21 +160,38 @@ const ExplorePage = () => {
     }
 
     if (dataType === "cookbook" && cookbooks) {
-      return cookbooks.filter((cookbook) => {
-        // filter by search input
-        if (
-          searchInput &&
-          !cookbook.title.toLowerCase().includes(searchInput.toLowerCase())
-        ) {
-          return false;
-        }
-        // filter by number of recipes
-        const cookbookRecipeCount = numRecipes;
-        if (cookbookRecipeCount > numRecipes) {
-          return false;
-        }
-        return true;
-      });
+      return cookbooks
+        .filter((cookbook) => {
+          // filter by search input
+          if (
+            searchInput &&
+            !cookbook.title.toLowerCase().includes(searchInput.toLowerCase())
+          ) {
+            return false;
+          }
+          // filter by number of recipes
+          if (
+            allRecipes &&
+            allRecipes?.filter((recipe) => recipe.cookbookId == cookbook.id)
+              .length < numRecipes
+          ) {
+            return false;
+          }
+          return true;
+        })
+        .sort((a, b) => {
+          // sort by chronology
+          if (chronology === "newest") {
+            return (
+              new Date(b.datePublished).getTime() -
+              new Date(a.datePublished).getTime()
+            );
+          }
+          return (
+            new Date(a.datePublished).getTime() -
+            new Date(b.datePublished).getTime()
+          );
+        });
     }
 
     return [];

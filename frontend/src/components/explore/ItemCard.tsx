@@ -1,6 +1,7 @@
 import { Box } from "@mui/system";
 import { Cookbook, Recipe } from "../../types";
 import { Chip, Typography } from "@mui/material";
+import { useGetCookbook } from "../../hooks/useGetCookbook";
 
 interface ItemCardProps {
   data: Recipe | Cookbook;
@@ -12,9 +13,12 @@ const isRecipe = (data: Recipe | Cookbook): data is Recipe => {
 };
 
 const ItemCard = ({ data, onClick }: ItemCardProps) => {
+  const cookbookId = isRecipe(data) ? data.cookbookId : -1;
+  const { data: cookbook } = useGetCookbook(cookbookId);
   return (
     <Box
       width="fit-content"
+      minWidth="220px"
       minHeight="300px"
       onClick={onClick}
       padding="8px"
@@ -37,6 +41,7 @@ const ItemCard = ({ data, onClick }: ItemCardProps) => {
       {/* Title */}
       <Typography fontSize={{ lg: 26, md: 22, sm: 28, xs: 28 }}>
         {data.title}
+        {isRecipe(data) && `: ${cookbook?.title}`}
       </Typography>
 
       {/* Description */}
