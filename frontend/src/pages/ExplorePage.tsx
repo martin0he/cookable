@@ -219,9 +219,9 @@ const ExplorePage = () => {
       >
         {/* sticky filter bar */}
         <Box
-          width={{ lg: "28%", md: "28%", sm: "100%", xs: "100%" }}
-          minHeight={{ md: "83vh", sm: "fit-content", xs: "fit-content" }}
-          position={{ lg: "sticky", md: "sticky", sm: "static", xs: "static" }}
+          width={{ lg: "28vw", md: "28vw", sm: "100%", xs: "100%" }}
+          minHeight={{ md: "78vh", sm: "fit-content", xs: "fit-content" }}
+          height={{ md: "fit-content", sm: "fit-content", xs: "fit-content" }}
           padding="20px"
           display="flex"
           flexDirection="column"
@@ -388,28 +388,27 @@ const ExplorePage = () => {
                 display="flex"
                 flexDirection="column"
                 width="100%"
-                justifyContent="center"
+                justifyContent="flex-start"
                 alignItems="flex-start"
               >
                 <Typography fontSize={{ lg: 18, md: 16, sm: 16, xs: 20 }}>
                   Tags
                 </Typography>
-                <Box width="100%">
+                <Box width="100%" display="flex" flexWrap="wrap">
                   {allTags?.map((tag) => (
                     <Button
                       key={tag}
                       onClick={handleTagToggle}
                       sx={{
-                        padding: 0,
                         width: "fit-content",
                         borderRadius: "8px",
-                        margin: "4px",
                       }}
                     >
                       <Chip
                         key={tag}
                         label={tag}
                         sx={{
+                          flexGrow: 1,
                           borderRadius: "inherit",
                           textTransform: "none",
                           border: "1.8px",
@@ -458,7 +457,7 @@ const ExplorePage = () => {
         {/* search + body */}
         <Box
           display="flex"
-          width={{ lg: "72%", md: "72%", sm: "100%", xs: "100%" }}
+          width={{ lg: "80vw", md: "80vw", sm: "100%", xs: "100%" }}
           height={{ md: "83vh", sm: "fit-content", xs: "fit-content" }}
           flexDirection="column"
           alignItems="center"
@@ -512,7 +511,7 @@ const ExplorePage = () => {
               justifyContent: "space-between",
               alignItems: "flex-start",
               gap: "16px",
-              paddingBottom: "20px",
+              paddingBottom: "60px",
               width: "100%",
             }}
           >
