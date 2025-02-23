@@ -34,7 +34,7 @@ const ItemCard = ({ data, onClick }: ItemCardProps) => {
         "&:hover": {
           borderStyle: "solid",
           cursor: "pointer",
-          transform: "scale(1.02)",
+          transform: "scale(1.01)",
         },
       }}
     >
