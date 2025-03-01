@@ -7,7 +7,7 @@ CREATE TABLE
         username VARCHAR(255) UNIQUE NOT NULL,
         first_name VARCHAR(255) NOT NULL,
         last_name VARCHAR(255) NOT NULL,
-        profile_picture_url TEXT,
+        profile_picture_url TEXT DEFAULT 'https://www.citypng.com/public/uploads/preview/black-user-member-guest-icon-701751695037011q8iwf4mjbn.png',
         email VARCHAR(255) UNIQUE NOT NULL,
         bio TEXT,
         date_registered TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
