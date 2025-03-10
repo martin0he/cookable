@@ -6,12 +6,12 @@ import { useState } from "react";
 import { IoIosSave } from "react-icons/io";
 import { FaRegEdit } from "react-icons/fa";
 const UserProfilePage = () => {
-  const { data: user, isLoading } = useGetCurrentUser();
+  const { data: user } = useGetCurrentUser();
   const [isEditing, setIsEditing] = useState(false);
   const [userBio, setUserBio] = useState(user?.bio);
   const [username, setUsername] = useState(user?.username);
   const [email, setEmail] = useState(user?.email);
-  const [password, setPassword] = useState("");
+  // const [password, setPassword] = useState("");
 
   const UserDetailField = ({
     fieldTitle,
@@ -123,7 +123,7 @@ const UserProfilePage = () => {
           <Typography height="100%" flexGrow={1}>
             <textarea
               name="bio"
-              value={userBio}
+              value={userBio || ""}
               onChange={handleBioChange}
               placeholder="Add a descriptive bio of yourself here; talk about your background, cultural ties to food, professional and/or personal cooking experience, etc..."
               style={{
