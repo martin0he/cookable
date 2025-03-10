@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Box,
   Button,
@@ -64,20 +65,20 @@ const ExplorePage = () => {
   const [numRecipes, setNumRecipes] = useState(minimumNumRecipes);
 
   const handleDataTypeChange = (
-    event: React.MouseEvent<HTMLElement>,
+    _event: React.MouseEvent<HTMLElement>,
     newType: string
   ) => {
     setDataType(newType);
   };
 
   const handleChronologyChange = (
-    event: React.MouseEvent<HTMLElement>,
+    _event: React.MouseEvent<HTMLElement>,
     newChronology: string
   ) => {
     setChronology(newChronology);
   };
 
-  const handleDurationChange = (event: Event, newValue: number | number[]) => {
+  const handleDurationChange = (_event: Event, newValue: number | number[]) => {
     setExpectedDuration(newValue as number);
   };
 
@@ -94,7 +95,10 @@ const ExplorePage = () => {
     }
   };
 
-  const handleRecipeNumChange = (event: Event, newValue: number | number[]) => {
+  const handleRecipeNumChange = (
+    _event: Event,
+    newValue: number | number[]
+  ) => {
     setNumRecipes(newValue as number);
   };
 
