@@ -4,7 +4,7 @@ import { User } from "../types";
 import { transformUser } from "../transformers/UserTransformer";
 
 const updateUser = async (userData: {
-  userId: number;
+  userId?: number;
   username?: string;
   firstName?: string;
   lastName?: string;

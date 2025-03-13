@@ -1,13 +1,12 @@
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation } from "react-query";
 import api from "../services/api";
+import { queryClient } from "../main";
 
 const deleteUser = async (): Promise<void> => {
   await api.delete("/users/delete");
 };
 
 export const useDeleteUser = () => {
-  const queryClient = useQueryClient();
-
   return useMutation(deleteUser, {
     onSuccess: () => {
       queryClient.removeQueries("currentUser");

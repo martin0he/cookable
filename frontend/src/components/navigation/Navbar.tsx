@@ -53,7 +53,7 @@ const Navbar = ({ isLandingPage }: { isLandingPage?: boolean }) => {
         backgroundColor: `rgba(254, 250, 240, ${isLandingPage ? 0 : opacity})`,
         backdropFilter: `blur(10px)`,
         WebkitBackdropFilter: `blur(10px)`,
-        zIndex: 1000,
+        zIndex: 500,
       }}
     >
       <Link to="/" style={{ textDecoration: "none" }}>
