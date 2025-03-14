@@ -95,9 +95,9 @@ const UserProfilePage = () => {
         <Box display="flex" flexDirection="column" alignItems="center">
           {/* avatar */}
           <img
-            src={user.profilePictureUrl || "/default-avatar.png"}
+            src={user.profilePictureUrl || "/guest-avatar.png"}
             alt={`${user.firstName} ${user.lastName}`}
-            style={{ borderRadius: "50%", width: "100px", height: "100px" }}
+            style={{ width: "140px", height: "140px" }}
           />
           {/* name */}
           <Typography variant="h5" sx={{ mt: 2 }}>
