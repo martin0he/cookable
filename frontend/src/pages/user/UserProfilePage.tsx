@@ -5,11 +5,13 @@ import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { IoIosSave } from "react-icons/io";
 import { useUpdateUser } from "../../hooks/useUpdateUser";
+import ConfirmChangesModal from "../../components/user/ConfirmChangesModal";
 
 const UserProfilePage = () => {
   const { data: user } = useGetCurrentUser();
   const { mutate } = useUpdateUser();
   const [isEditing, setIsEditing] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [userBio, setUserBio] = useState(user && user.bio);
   const [userFirstName, setUserFirstName] = useState(user && user.firstName);
   const [userLastName, setUserLastName] = useState(user && user.lastName);
@@ -48,6 +50,7 @@ const UserProfilePage = () => {
       profilePic: user.profilePictureUrl,
     });
     setIsEditing(false);
+    setIsModalOpen(false);
   };
 
   const ToggleButton = () => {
@@ -61,7 +64,7 @@ const UserProfilePage = () => {
       </IconButton>
     ) : (
       <IconButton
-        onClick={handleSaveChanges}
+        onClick={() => setIsModalOpen(true)}
         color="primary"
         sx={{ position: "absolute", bottom: 30, right: 30 }}
       >
@@ -81,6 +84,11 @@ const UserProfilePage = () => {
         columnGap="25px"
         rowGap="45px"
       >
+        <ConfirmChangesModal
+          isOpen={isModalOpen}
+          handleClose={() => setIsModalOpen(false)}
+          handleConfirm={handleSaveChanges}
+        />
         {/* toggle editing state */}
         <ToggleButton />
         {/* avatar and name */}
