@@ -1,12 +1,65 @@
-import { Box, TextField, Typography } from "@mui/material";
+import { Box, IconButton, TextField, Typography } from "@mui/material";
 import PageLayout from "../PageLayout";
 import { useGetCurrentUser } from "../../hooks/useGetCurrentUser";
+import { useState } from "react";
+import { FaEdit } from "react-icons/fa";
+import { IoIosSave } from "react-icons/io";
 
 const UserProfilePage = () => {
   const { data: user } = useGetCurrentUser();
+  const [isEditing, setIsEditing] = useState(false);
+  const [userBio, setUserBio] = useState(user && user.bio);
+  const [userFirstName, setUserFirstName] = useState(user && user.firstName);
+  const [userLastName, setUserLastName] = useState(user && user.lastName);
+  const [userUsername, setUserUsername] = useState(user && user.username);
+  const [userEmail, setUserEmail] = useState(user && user.email);
+
   if (!user) {
     return null;
   }
+
+  const handleBioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUserBio(event.target.value);
+  };
+  const handleFirstNameChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setUserFirstName(event.target.value);
+  };
+  const handleLastNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUserLastName(event.target.value);
+  };
+  const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUserUsername(event.target.value);
+  };
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUserEmail(event.target.value);
+  };
+  const handleSaveChanges = () => {
+    console.log("Saving changes...");
+    setIsEditing(true);
+  };
+
+  const ToggleButton = () => {
+    return isEditing ? (
+      <IconButton
+        onClick={() => setIsEditing(false)}
+        color="primary"
+        sx={{ position: "absolute", bottom: 30, right: 30 }}
+      >
+        <FaEdit />
+      </IconButton>
+    ) : (
+      <IconButton
+        onClick={handleSaveChanges}
+        color="primary"
+        sx={{ position: "absolute", bottom: 30, right: 30 }}
+      >
+        <IoIosSave />
+      </IconButton>
+    );
+  };
+
   return (
     <PageLayout>
       <Box
@@ -18,6 +71,8 @@ const UserProfilePage = () => {
         columnGap="25px"
         rowGap="45px"
       >
+        {/* toggle editing state */}
+        <ToggleButton />
         {/* avatar and name */}
         <Box display="flex" flexDirection="column" alignItems="center">
           {/* avatar */}
@@ -34,8 +89,10 @@ const UserProfilePage = () => {
         {/* bio */}
 
         <TextField
-          value={user.bio || ""}
+          disabled={isEditing}
+          value={userBio || ""}
           placeholder="Write a short bio about yourself..."
+          onChange={handleBioChange}
           multiline
           minRows={4}
           fullWidth
@@ -93,8 +150,10 @@ const UserProfilePage = () => {
             rowGap="20px"
           >
             <TextField
-              value={user.firstName || ""}
+              disabled={isEditing}
+              value={userFirstName || ""}
               placeholder="First Name"
+              onChange={handleFirstNameChange}
               variant="standard"
               InputProps={{
                 disableUnderline: true,
@@ -106,8 +165,10 @@ const UserProfilePage = () => {
               }}
             />
             <TextField
-              value={user.lastName || ""}
+              disabled={isEditing}
+              value={userLastName || ""}
               placeholder="Last Name"
+              onChange={handleLastNameChange}
               variant="standard"
               InputProps={{
                 disableUnderline: true,
@@ -129,8 +190,10 @@ const UserProfilePage = () => {
             rowGap="20px"
           >
             <TextField
-              value={user.username || ""}
+              disabled={isEditing}
+              value={userUsername || ""}
               placeholder="Username"
+              onChange={handleUsernameChange}
               variant="standard"
               InputProps={{
                 disableUnderline: true,
@@ -142,8 +205,10 @@ const UserProfilePage = () => {
               }}
             />
             <TextField
-              value={user.email || ""}
+              disabled={isEditing}
+              value={userEmail || ""}
               placeholder="Email"
+              onChange={handleEmailChange}
               variant="standard"
               InputProps={{
                 disableUnderline: true,
