@@ -4,9 +4,11 @@ import { useGetCurrentUser } from "../../hooks/useGetCurrentUser";
 import { useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { IoIosSave } from "react-icons/io";
+import { useUpdateUser } from "../../hooks/useUpdateUser";
 
 const UserProfilePage = () => {
   const { data: user } = useGetCurrentUser();
+  const { mutate } = useUpdateUser();
   const [isEditing, setIsEditing] = useState(false);
   const [userBio, setUserBio] = useState(user && user.bio);
   const [userFirstName, setUserFirstName] = useState(user && user.firstName);
@@ -36,14 +38,22 @@ const UserProfilePage = () => {
     setUserEmail(event.target.value);
   };
   const handleSaveChanges = () => {
-    console.log("Saving changes...");
-    setIsEditing(true);
+    mutate({
+      userId: user.id,
+      bio: userBio,
+      firstName: userFirstName,
+      lastName: userLastName,
+      username: userUsername,
+      email: userEmail,
+      profilePic: user.profilePictureUrl,
+    });
+    setIsEditing(false);
   };
 
   const ToggleButton = () => {
-    return isEditing ? (
+    return !isEditing ? (
       <IconButton
-        onClick={() => setIsEditing(false)}
+        onClick={() => setIsEditing(true)}
         color="primary"
         sx={{ position: "absolute", bottom: 30, right: 30 }}
       >
@@ -89,7 +99,7 @@ const UserProfilePage = () => {
         {/* bio */}
 
         <TextField
-          disabled={isEditing}
+          disabled={!isEditing}
           value={userBio || ""}
           placeholder="Write a short bio about yourself..."
           onChange={handleBioChange}
@@ -150,7 +160,7 @@ const UserProfilePage = () => {
             rowGap="20px"
           >
             <TextField
-              disabled={isEditing}
+              disabled={!isEditing}
               value={userFirstName || ""}
               placeholder="First Name"
               onChange={handleFirstNameChange}
@@ -165,7 +175,7 @@ const UserProfilePage = () => {
               }}
             />
             <TextField
-              disabled={isEditing}
+              disabled={!isEditing}
               value={userLastName || ""}
               placeholder="Last Name"
               onChange={handleLastNameChange}
@@ -190,7 +200,7 @@ const UserProfilePage = () => {
             rowGap="20px"
           >
             <TextField
-              disabled={isEditing}
+              disabled={!isEditing}
               value={userUsername || ""}
               placeholder="Username"
               onChange={handleUsernameChange}
@@ -205,7 +215,7 @@ const UserProfilePage = () => {
               }}
             />
             <TextField
-              disabled={isEditing}
+              disabled={!isEditing}
               value={userEmail || ""}
               placeholder="Email"
               onChange={handleEmailChange}
