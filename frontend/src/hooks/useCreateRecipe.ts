@@ -1,6 +1,5 @@
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import api from "../services/api";
-import { queryClient } from "../main";
 
 const createRecipe = async (recipeData: {
   authorId: number;
@@ -18,6 +17,7 @@ const createRecipe = async (recipeData: {
 };
 
 export const useCreateRecipe = () => {
+  const queryClient = useQueryClient();
   return useMutation(createRecipe, {
     onSuccess: (newRecipe) => {
       queryClient.invalidateQueries("recipes");

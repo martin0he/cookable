@@ -1,6 +1,5 @@
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import api from "../services/api";
-import { queryClient } from "../main";
 
 const createCookbook = async (cookbookData: {
   title: string;
@@ -14,6 +13,7 @@ const createCookbook = async (cookbookData: {
 };
 
 export const useCreateCookbook = () => {
+  const queryClient = useQueryClient();
   return useMutation(createCookbook, {
     onSuccess: (newCookbook) => {
       queryClient.invalidateQueries("cookbooks");

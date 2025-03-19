@@ -58,7 +58,15 @@ const UserProfilePage = () => {
       <IconButton
         onClick={() => setIsEditing(true)}
         color="primary"
-        sx={{ position: "absolute", bottom: 30, right: 30 }}
+        sx={{
+          position: "fixed",
+          bottom: 30,
+          right: 30,
+          "&:hover": {
+            transform: "scale(1.26)",
+          },
+          transition: "all 0.3s ease-in-out",
+        }}
       >
         <FaEdit />
       </IconButton>
@@ -66,7 +74,15 @@ const UserProfilePage = () => {
       <IconButton
         onClick={() => setIsModalOpen(true)}
         color="primary"
-        sx={{ position: "absolute", bottom: 30, right: 30 }}
+        sx={{
+          position: "fixed",
+          bottom: 30,
+          right: 30,
+          "&:hover": {
+            transform: "scale(1.26)",
+          },
+          transition: "all 0.3s ease-in-out",
+        }}
       >
         <IoIosSave />
       </IconButton>
@@ -97,7 +113,7 @@ const UserProfilePage = () => {
           <img
             src={user.profilePictureUrl || "/guest-avatar.png"}
             alt={`${user.firstName} ${user.lastName}`}
-            style={{ width: "140px", height: "140px" }}
+            style={{ width: "220px", height: "220px" }}
           />
           {/* name */}
           <Typography variant="h5" sx={{ mt: 2 }}>
