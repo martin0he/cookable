@@ -1,6 +1,6 @@
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import theme from "./theme";
+import theme from "./extra_styling/theme";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import { AuthProvider, useAuth } from "./AuthContext";

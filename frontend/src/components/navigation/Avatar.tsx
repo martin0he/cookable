@@ -43,18 +43,24 @@ const AvatarMenu = () => {
                 height: 43,
                 justifyContent: "center",
                 alignItems: "center",
+                backgroundColor: "transparent",
+                borderRadius: "50%",
               }}
             >
               {isAuthenticated && user ? (
                 <img
-                  style={{ width: "100%", height: "100%", borderRadius: "50%" }}
+                  style={{ width: "100%", height: "100%" }}
                   src={
-                    user.profilePictureUrl ??
-                    "https://picsum.photos/id/237/200/300"
+                    user.profilePictureUrl
+                      ? user.profilePictureUrl
+                      : "/guest-avatar.png"
                   }
                 />
               ) : (
-                "g"
+                <img
+                  style={{ width: "100%", height: "100%" }}
+                  src={"/guest-avatar.png"}
+                />
               )}
             </Avatar>
           </IconButton>

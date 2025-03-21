@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../AuthContext";
 import PageLayout from "./PageLayout";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { additionalColors } from "../theme";
+import { additionalColors } from "../extra_styling/theme";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {

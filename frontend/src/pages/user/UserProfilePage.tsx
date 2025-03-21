@@ -1,17 +1,18 @@
 import { Box, IconButton, TextField, Typography } from "@mui/material";
 import PageLayout from "../PageLayout";
-import { useGetCurrentUser } from "../../hooks/useGetCurrentUser";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { IoIosSave } from "react-icons/io";
 import { useUpdateUser } from "../../hooks/useUpdateUser";
 import ConfirmChangesModal from "../../components/user/ConfirmChangesModal";
+import { useGetCurrentUser } from "../../hooks/useGetCurrentUser";
 
 const UserProfilePage = () => {
-  const { data: user } = useGetCurrentUser();
+  const { data: userData } = useGetCurrentUser();
   const { mutate } = useUpdateUser();
   const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [user, setUser] = useState(userData);
   const [userBio, setUserBio] = useState(user && user.bio);
   const [userFirstName, setUserFirstName] = useState(user && user.firstName);
   const [userLastName, setUserLastName] = useState(user && user.lastName);
@@ -42,11 +43,11 @@ const UserProfilePage = () => {
   const handleSaveChanges = () => {
     mutate({
       userId: user.id,
-      bio: userBio,
-      firstName: userFirstName,
-      lastName: userLastName,
-      username: userUsername,
-      email: userEmail,
+      bio: userBio || user.bio,
+      firstName: userFirstName || user.firstName,
+      lastName: userLastName || user.lastName,
+      username: userUsername || user.username,
+      email: userEmail || user.email,
       profilePic: user.profilePictureUrl,
     });
     setIsEditing(false);
